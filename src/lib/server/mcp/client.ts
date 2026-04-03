@@ -13,7 +13,7 @@ const TIMEOUT_MS = 30_000;
 const MAX_RETRIES = 1;
 const LOG_PREFIX = '[mcp:client]';
 
-let _sessionId: string | null = null;
+let _sessionId: string | null = null; // null = not initialized, '' = initialized without session ID
 let _requestId = 0;
 
 function nextId(): number {
@@ -30,7 +30,7 @@ function getBaseUrl(): string {
 
 /** Initialize MCP session if not already established */
 async function ensureSession(): Promise<string> {
-	if (_sessionId) return _sessionId;
+	if (_sessionId !== null) return _sessionId;
 
 	const url = getBaseUrl();
 	const body = {
@@ -64,14 +64,11 @@ async function ensureSession(): Promise<string> {
 			throw new McpError('session_error', `MCP init failed: ${res.status} ${res.statusText}`);
 		}
 
-		const sessionId = res.headers.get('mcp-session-id');
-		if (!sessionId) {
-			throw new McpError('session_error', 'MCP server did not return session ID');
-		}
+		const sessionId = res.headers.get('mcp-session-id') ?? '';
 
 		const data = (await res.json()) as McpInitializeResponse;
 		console.log(
-			`${LOG_PREFIX} Session established with ${data.result.serverInfo.name} v${data.result.serverInfo.version}`
+			`${LOG_PREFIX} Session established with ${data.result.serverInfo.name} v${data.result.serverInfo.version}${sessionId ? '' : ' (no session ID)'}`
 		);
 
 		_sessionId = sessionId;
@@ -122,13 +119,16 @@ export async function callTool(
 
 			let res: Response;
 			try {
+				const headers: Record<string, string> = {
+						'Content-Type': 'application/json',
+						Accept: 'application/json'
+					};
+				if (sessionId) {
+					headers['Mcp-Session-Id'] = sessionId;
+				}
 				res = await fetch(url, {
 					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						Accept: 'application/json',
-						'Mcp-Session-Id': sessionId
-					},
+					headers,
 					body: JSON.stringify(body),
 					signal: controller.signal
 				});
