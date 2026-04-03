@@ -1,54 +1,63 @@
 """
-Patent Value Explorer — Jupyter Notebook Launcher
+Patent Value Explorer — Bootstrap & Launch
 
-Orchestrates install, build, start, and stop for the SvelteKit application.
-Designed for EPO TIP JupyterHub but works standalone too.
+Handles everything: pip install MCP, npm install, build, start MCP + app server.
+Designed to be called from a Jupyter notebook cell.
 """
 
 import html
 import os
+import shutil
 import socket
 import subprocess
+import sys
 import time
 from pathlib import Path
 from urllib.error import URLError
 from urllib.request import urlopen
 
 PROJECT_DIR = Path(__file__).parent
+MCP_PORT = 8082
 APP_PORT = 52080
+
+try:
+    from IPython.display import HTML, clear_output, display
+    IN_NOTEBOOK = True
+except ImportError:
+    IN_NOTEBOOK = False
+
 _processes: list[subprocess.Popen] = []
 
 
 def _log(msg: str, escape: bool = True) -> None:
-    """Display styled HTML in Jupyter, plain text in CLI.
-
-    Args:
-        msg: Message to display. May contain HTML when escape=False.
-        escape: If True, html-escape the message before embedding in HTML.
-    """
     safe_msg = html.escape(msg) if escape else msg
-    try:
-        from IPython.display import HTML, display
-
-        display(
-            HTML(
-                f"<div style='padding:8px;background:#f0f0f0;border-left:4px solid #082453;"
-                f"margin:4px 0;font-family:monospace'>{safe_msg}</div>"
-            )
-        )
-    except Exception:
+    if IN_NOTEBOOK:
+        clear_output(wait=True)
+        display(HTML(
+            f"<div style='font-family:system-ui,sans-serif;padding:20px;"
+            f"background:#f8fafc;border-left:4px solid #082453;border-radius:8px;'>"
+            f"<div style='font-size:15px;color:#334155;'>{safe_msg}</div></div>"
+        ))
+    else:
         print(msg)
 
 
 def _port_in_use(port: int) -> bool:
-    """Check if a port is already in use via socket probe."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.settimeout(1)
         return s.connect_ex(("127.0.0.1", port)) == 0
 
 
+def _wait_for_port(port: int, timeout: int = 15) -> bool:
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        if _port_in_use(port):
+            return True
+        time.sleep(0.3)
+    return False
+
+
 def _wait_for_health(port: int, timeout: int = 15) -> bool:
-    """Poll /health endpoint until HTTP 200. Returns True if healthy."""
     url = f"http://127.0.0.1:{port}/health"
     deadline = time.time() + timeout
     while time.time() < deadline:
@@ -62,149 +71,162 @@ def _wait_for_health(port: int, timeout: int = 15) -> bool:
     return False
 
 
-def _run(
-    cmd: list[str], cwd: Path = PROJECT_DIR, timeout: int = 600
-) -> subprocess.CompletedProcess:
-    """Run a subprocess with error handling, logging, and timeout.
-
-    Args:
-        cmd: Command and arguments to run.
-        cwd: Working directory.
-        timeout: Max seconds before killing the process (default 10 min).
-    """
-    cmd_str = " ".join(cmd)
-    _log(f"$ {cmd_str}", escape=False)
-    try:
-        result = subprocess.run(
-            cmd,
-            cwd=cwd,
-            capture_output=True,
-            text=True,
-            timeout=timeout,
-        )
-    except subprocess.TimeoutExpired:
-        raise RuntimeError(
-            f"Command timed out after {timeout}s: {cmd_str}"
-        )
-    if result.stdout and result.stdout.strip():
-        _log(result.stdout.strip()[:2000])
+def _run(cmd: list[str], cwd: Path = PROJECT_DIR, timeout: int = 600) -> subprocess.CompletedProcess:
+    result = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, timeout=timeout)
     if result.returncode != 0:
         stderr = result.stderr.strip() if result.stderr else result.stdout.strip()
-        raise RuntimeError(f"Command failed ({result.returncode}): {cmd_str}\n{stderr}")
+        raise RuntimeError(f"Command failed: {' '.join(cmd)}\n{stderr}")
     return result
 
 
 def stop() -> None:
-    """Gracefully stop all tracked server processes."""
-    if not _processes:
-        _log("No running processes to stop.")
-        return
+    """Stop all running Patent Value Explorer processes."""
     for proc in _processes:
         if proc.poll() is None:
-            _log(f"Stopping process {proc.pid}...", escape=False)
             proc.terminate()
             try:
                 proc.wait(timeout=5)
             except subprocess.TimeoutExpired:
-                _log(f"Force-killing process {proc.pid}", escape=False)
                 proc.kill()
                 proc.wait()
     _processes.clear()
-    _log("All processes stopped.")
+    if IN_NOTEBOOK:
+        clear_output(wait=True)
+        display(HTML(
+            "<div style='font-family:system-ui,sans-serif;padding:20px;"
+            "background:#fef2f2;border-left:4px solid #dc2626;border-radius:8px;'>"
+            "<div style='font-size:15px;color:#991b1b;'>Patent Value Explorer stopped.</div></div>"
+        ))
+    else:
+        print("Patent Value Explorer stopped.")
 
 
 def launch() -> None:
-    """Install, build, start server, and print access URL."""
-    _log("<b>Patent Value Explorer</b> &mdash; Starting...", escape=False)
+    """Full bootstrap: install MCP, npm deps, build, start MCP + app."""
+    global _processes
 
-    # Stage 1: Check Node.js available
-    _log("<b>Stage 1:</b> Checking Node.js...", escape=False)
+    if _processes:
+        stop()
+
     try:
-        result = _run(["node", "--version"])
-        _log(f"Node.js {result.stdout.strip()} found")
-    except (RuntimeError, FileNotFoundError):
-        _log("<span style='color:red'>Node.js not found. Please install Node.js 22+ and pnpm.</span>", escape=False)
-        return
+        # 1. Check Node.js
+        _log("⏳ Checking environment...")
+        if not shutil.which("node"):
+            raise RuntimeError("Node.js not found. Contact your TIP administrator.")
+        node_version = subprocess.run(
+            ["node", "--version"], capture_output=True, text=True
+        ).stdout.strip()
 
-    # Stage 2: pnpm install (skip if node_modules/.package-lock.json exists)
-    lock_file = PROJECT_DIR / "node_modules" / ".package-lock.json"
-    if lock_file.exists():
-        _log("<b>Stage 2:</b> Dependencies already installed, skipping pnpm install", escape=False)
-    else:
-        _log("<b>Stage 2:</b> Installing dependencies...", escape=False)
-        _run(["pnpm", "install"], cwd=PROJECT_DIR)
-        _log("Dependencies installed")
-
-    # Stage 3: pnpm build (skip if build/index.js newer than most recent src/ change)
-    build_index = PROJECT_DIR / "build" / "index.js"
-    skip_build = False
-    if build_index.exists():
-        src_dir = PROJECT_DIR / "src"
-        src_files = [f for f in src_dir.rglob("*") if f.is_file()]
-        if src_files:
-            src_mtime = max(f.stat().st_mtime for f in src_files)
-            if build_index.stat().st_mtime > src_mtime:
-                skip_build = True
-
-    if skip_build:
-        _log("<b>Stage 3:</b> Build is up-to-date, skipping pnpm build", escape=False)
-    else:
-        _log("<b>Stage 3:</b> Building application...", escape=False)
-        _run(["pnpm", "build"], cwd=PROJECT_DIR)
-        _log("Build complete")
-
-    # Stage 4: Check port is free
-    if _port_in_use(APP_PORT):
-        _log(
-            f"<span style='color:red'><b>Error:</b> Port {APP_PORT} is already in use.</span><br>"
-            f"Try <code>stop()</code> first. If that doesn't help, the port may be held by "
-            f"an orphaned process from a previous session. "
-            f"Run <code>!lsof -ti :{APP_PORT} | xargs kill</code> in a notebook cell to free it.",
-            escape=False,
+        # 2. Install mtc-patstat-mcp-lite
+        _log("⏳ Installing mtc.berlin PATSTAT MCP...")
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "--user",
+             "git+https://github.com/mtcberlin/mtc-patstat-mcp-lite.git@develop"],
+            capture_output=True, text=True, check=True,
         )
-        return
+        # Ensure ~/.local/bin is in PATH (pip --user installs scripts there)
+        local_bin = os.path.expanduser("~/.local/bin")
+        if local_bin not in os.environ.get("PATH", ""):
+            os.environ["PATH"] = local_bin + ":" + os.environ["PATH"]
 
-    # Stage 5: Start server subprocess
-    _log(f"<b>Stage 5:</b> Starting server on port {APP_PORT}...", escape=False)
-    env = {
-        **os.environ,
-        "PORT": str(APP_PORT),
-        "NODE_ENV": "production",
-    }
-    proc = subprocess.Popen(
-        ["node", "build/index.js"],
-        cwd=PROJECT_DIR,
-        env=env,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    _processes.append(proc)
+        # 3. npm install (skip if already done)
+        marker = PROJECT_DIR / "node_modules" / ".package-lock.json"
+        if not marker.exists():
+            _log("⏳ Installing dependencies (first run, ~30s)...")
+            _run(["npm", "install", "--prefer-offline"])
+        else:
+            _log("⏳ Dependencies already installed, skipping...")
 
-    # Stage 6: Wait for /health, print URL
-    _log("Waiting for server to be ready...")
-    if not _wait_for_health(APP_PORT, timeout=15):
-        _log("<span style='color:red'>Server did not become healthy within 15 seconds.</span>", escape=False)
-        stop()
-        return
+        # 4. Build (skip if up-to-date)
+        build_index = PROJECT_DIR / "build" / "index.js"
+        needs_build = not build_index.exists()
+        if not needs_build:
+            build_mtime = build_index.stat().st_mtime
+            for f in (PROJECT_DIR / "src").rglob("*"):
+                if f.is_file() and f.stat().st_mtime > build_mtime:
+                    needs_build = True
+                    break
 
-    # Generate access URL
-    prefix = os.environ.get("JUPYTERHUB_SERVICE_PREFIX", "")
-    if prefix:
-        url = f"{prefix}proxy/{APP_PORT}/"
-    else:
-        url = f"http://localhost:{APP_PORT}/"
-    _log(
-        f"<b>Server ready!</b> Open the app: "
-        f"<a href='{url}' target='_blank'>{html.escape(url)}</a>",
-        escape=False,
-    )
+        if needs_build:
+            _log("⏳ Building app...")
+            _run(["npm", "run", "build"])
 
+        # 5. Check ports are free
+        for port in (MCP_PORT, APP_PORT):
+            if _port_in_use(port):
+                raise RuntimeError(
+                    f"Port {port} is already in use. "
+                    f"Run stop() first or restart the kernel."
+                )
 
-if __name__ == "__main__":
-    try:
-        launch()
+        # 6. Start MCP server
+        _log("⏳ Starting mtc.berlin PATSTAT MCP...")
+        mcp_proc = subprocess.Popen(
+            [sys.executable, "-m", "patstat_mcp.server", "--http", "--port", str(MCP_PORT)],
+            env=os.environ.copy(),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        _processes.append(mcp_proc)
+        if not _wait_for_port(MCP_PORT, timeout=15):
+            raise RuntimeError("mtc.berlin PATSTAT MCP failed to start.")
+
+        # 7. Start app
+        _log("⏳ Starting Patent Value Explorer...")
+        app_proc = subprocess.Popen(
+            ["node", "build/index.js"],
+            cwd=PROJECT_DIR,
+            env={
+                **os.environ,
+                "PORT": str(APP_PORT),
+                "PATSTAT_MCP_URL": f"http://127.0.0.1:{MCP_PORT}/mcp",
+                "NODE_ENV": "production",
+            },
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        _processes.append(app_proc)
+        if not _wait_for_health(APP_PORT, timeout=15):
+            raise RuntimeError("App server did not become healthy within 15 seconds.")
+
+        # 8. Done — show link
+        base = os.environ.get("JUPYTERHUB_SERVICE_PREFIX", "")
+        url = f"{base}proxy/{APP_PORT}/" if base else f"http://localhost:{APP_PORT}/"
+
+        if IN_NOTEBOOK:
+            clear_output(wait=True)
+            display(HTML(f"""
+            <div style="font-family:system-ui,sans-serif;text-align:center;padding:32px;">
+                <div style="font-size:15px;color:#059669;font-weight:600;margin-bottom:16px;">
+                    ✅ Patent Value Explorer is running
+                </div>
+                <a href="{url}" target="_blank"
+                   style="display:inline-block;padding:14px 32px;
+                          background:#082453;color:white;border-radius:0;
+                          text-decoration:none;font-size:16px;font-weight:600;">
+                    Patent Value Explorer öffnen →
+                </a>
+                <div style="margin-top:12px;font-size:12px;color:#9ca3af;">
+                    Node {node_version} · MCP :{MCP_PORT} · App :{APP_PORT}
+                </div>
+            </div>"""))
+        else:
+            print(f"\nPatent Value Explorer is running!\nOpen: {url}")
+
+    except Exception as e:
         if _processes:
-            _log("Press Ctrl+C to stop the server")
-            _processes[0].wait()
-    except KeyboardInterrupt:
-        stop()
+            stop()
+        if IN_NOTEBOOK:
+            clear_output(wait=True)
+            display(HTML(f"""
+            <div style="font-family:system-ui,sans-serif;padding:20px;
+                        background:#fef2f2;border-left:4px solid #dc2626;border-radius:8px;">
+                <div style="font-size:15px;font-weight:600;color:#991b1b;">Start failed</div>
+                <div style="font-size:13px;color:#7f1d1d;margin-top:4px;">{html.escape(str(e))}</div>
+            </div>"""))
+        else:
+            print(f"ERROR: {e}")
+
+
+# Auto-launch when exec'd from notebook
+launch()

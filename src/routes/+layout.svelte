@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '../app.css';
-	import { ModeWatcher } from 'mode-watcher';
 	import { TooltipProvider } from '$lib/components/ui/tooltip';
 	import { page } from '$app/state';
 	import { parsePatentNumber, toNormalized } from '$lib/utils/patent-number-parser';
@@ -20,7 +19,6 @@
 	});
 </script>
 
-<ModeWatcher />
 <TooltipProvider delayDuration={300}>
 	<SkipLink />
 	<SiteHeader {currentPatentNumber} />

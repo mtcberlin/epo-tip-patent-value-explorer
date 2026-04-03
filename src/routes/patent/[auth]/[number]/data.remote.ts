@@ -88,6 +88,32 @@ export const getPatent = query(
 				console.info(`${LOG_PREFIX} Reference patent hit: ${pubNumber}`);
 				const profile = mapReferenceToProfile(ref);
 
+				// Enrich with percentiles from cohort stats (mapper only has normalized scores, not percentiles)
+				const filingYear = ref.filingDate ? parseInt(ref.filingDate.substring(0, 4), 10) : null;
+				if (filingYear && ref.wipoFieldNumber > 0) {
+					try {
+						const enriched = await normalizeAllIndicators(
+							profile.rawIndicators,
+							ref.wipoFieldNumber,
+							filingYear
+						);
+						// Merge: keep pre-computed normalized values from reference data, add percentiles + cohort info
+						for (const score of profile.normalizedScores) {
+							const fresh = enriched.find((e) => e.indicator === score.indicator);
+							if (fresh) {
+								score.percentile = fresh.percentile;
+								score.cohortSize = fresh.cohortSize;
+								score.smallCohort = fresh.smallCohort;
+								if (score.normalized === null && fresh.normalized !== null) {
+									score.normalized = fresh.normalized;
+								}
+							}
+						}
+					} catch (err) {
+						console.error(`${LOG_PREFIX} Percentile enrichment failed (non-fatal):`, err);
+					}
+				}
+
 				// PMI data (fast JSON lookup)
 				const pmiRow = ref.wipoFieldNumber > 0 ? await getPmiByField(ref.wipoFieldNumber) : null;
 				if (pmiRow) {

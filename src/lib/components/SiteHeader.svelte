@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { Menu, Settings } from '@lucide/svelte';
-	import { LightSwitch } from '$lib/components/ui/light-switch';
 	import * as Sheet from '$lib/components/ui/sheet';
 	import PatentSearchBar from '$lib/components/PatentSearchBar.svelte';
 	import DepatechLogo from '$lib/components/DepatechLogo.svelte';
@@ -35,12 +34,12 @@
 			<div class="flex-1"></div>
 		{/if}
 
-		<!-- Settings & Light Switch (Desktop) -->
+		<!-- Settings (Desktop) -->
 		<div class="hidden items-center gap-1 md:flex">
 			<button
 				onclick={() => (settings.dialogOpen = true)}
 				aria-label="Open settings"
-				class="text-foreground hover:bg-foreground hover:text-background relative inline-flex size-11 items-center justify-center rounded"
+				class="text-foreground hover:bg-muted relative inline-flex size-11 items-center justify-center rounded"
 			>
 				<Settings class="size-5" />
 				{#if settings.hasApiKey}
@@ -48,7 +47,6 @@
 					></span>
 				{/if}
 			</button>
-			<LightSwitch variant="ghost" />
 		</div>
 
 		<!-- Mobile Menu -->
@@ -59,7 +57,7 @@
 						<button
 							{...props}
 							aria-label="Open navigation menu"
-							class="text-foreground hover:bg-foreground hover:text-background inline-flex size-11 items-center justify-center rounded"
+							class="text-foreground hover:bg-muted inline-flex size-11 items-center justify-center rounded"
 						>
 							<Menu class="size-6" />
 						</button>
@@ -72,7 +70,7 @@
 					<nav class="flex flex-col gap-1 p-4" aria-label="Mobile navigation">
 						<a
 							href="{base}/"
-							class="text-foreground hover:bg-foreground hover:text-background rounded px-3 py-3 text-sm transition-colors"
+							class="text-foreground hover:bg-muted rounded px-3 py-3 text-sm transition-colors"
 							onclick={() => (mobileMenuOpen = false)}
 						>
 							Home
@@ -82,7 +80,7 @@
 								mobileMenuOpen = false;
 								settings.dialogOpen = true;
 							}}
-							class="text-foreground hover:bg-foreground hover:text-background flex items-center gap-2 rounded px-3 py-3 text-sm transition-colors"
+							class="text-foreground hover:bg-muted flex items-center gap-2 rounded px-3 py-3 text-sm transition-colors"
 						>
 							<Settings class="size-4" />
 							Settings
@@ -90,9 +88,6 @@
 								<span class="bg-primary size-1.5 rounded-full" aria-hidden="true"></span>
 							{/if}
 						</button>
-						<div class="border-border mt-4 border-t pt-4">
-							<LightSwitch variant="outline" />
-						</div>
 					</nav>
 				</Sheet.Content>
 			</Sheet.Root>
