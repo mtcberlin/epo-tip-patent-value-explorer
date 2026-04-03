@@ -1,0 +1,15 @@
+# Package Managers
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Build output
+.svelte-kit
+build
+dist
+
+# Generated
+node_modules
+_bmad
+_bmad-output
+_user_input

@@ -1,0 +1,252 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* ========== Self-Hosted Fonts (DSGVO-konform, kein CDN) ========== */
+
+@font-face {
+	font-family: 'Inter';
+	src: url('/fonts/Inter-Variable.woff2') format('woff2');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('/fonts/JetBrainsMono-Variable.woff2') format('woff2');
+	font-weight: 100 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* ========== Tailwind CSS 4 Theme (CSS-first, kein tailwind.config.js) ========== */
+
+@theme {
+	/* mtc.berlin CI Farben (static) */
+	--color-brand-primary: #082453;
+	--color-brand-accent: #890c58;
+	--color-text: #3d3d3b;
+
+	/* Diff-Encoding Farben (dynamic via CSS vars for dark mode support) */
+	--color-cpc-only: var(--diff-cpc-only);
+	--color-both: var(--diff-both);
+	--color-ipc-only: var(--diff-ipc-only);
+	--color-deprecated: var(--diff-deprecated);
+
+	/* Fonts */
+	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Register shadcn tokens as Tailwind utilities (dynamic, change with light/dark mode) */
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-border: var(--border);
+	--color-border-strong: var(--border-strong);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+	--color-sidebar-background: var(--sidebar-background);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-bg-hover: var(--bg-hover);
+	--color-brand-primary-light: var(--brand-primary-light);
+	--radius: var(--radius);
+}
+
+/* ========== shadcn-svelte Design Tokens (Light Mode) ========== */
+
+:root {
+	--radius: 0rem;
+	--background: oklch(0.985 0 0); /* #fafafa */
+	--foreground: oklch(0.145 0 0); /* #1a1a1a */
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.145 0 0);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.145 0 0);
+	--primary: oklch(0.205 0.085 265); /* #082453 brand-primary */
+	--primary-foreground: oklch(0.985 0 0);
+	--secondary: oklch(0.97 0 0);
+	--secondary-foreground: oklch(0.205 0 0);
+	--muted: oklch(0.97 0 0); /* #f5f5f5 */
+	--muted-foreground: oklch(0.49 0 0); /* #636363 — 5.3:1 on muted bg */
+	--accent: oklch(0.97 0 0);
+	--accent-foreground: oklch(0.205 0 0);
+	--destructive: oklch(0.577 0.245 27.325);
+	--destructive-foreground: oklch(0.985 0 0);
+	--border: oklch(0.922 0 0); /* #e5e5e5 */
+	--border-strong: oklch(0.145 0 0); /* #1a1a1a */
+	--input: oklch(0.922 0 0);
+	--ring: oklch(0.205 0.085 265); /* brand-primary for focus rings */
+	--chart-1: oklch(0.646 0.222 41.116);
+	--chart-2: oklch(0.6 0.118 184.704);
+	--chart-3: oklch(0.398 0.07 227.392);
+	--chart-4: oklch(0.828 0.189 84.429);
+	--chart-5: oklch(0.769 0.188 70.08);
+	--sidebar-background: oklch(0.985 0 0);
+	--sidebar-foreground: oklch(0.145 0 0);
+	--sidebar-primary: oklch(0.205 0.085 265);
+	--sidebar-primary-foreground: oklch(0.985 0 0);
+	--sidebar-accent: oklch(0.97 0 0);
+	--sidebar-accent-foreground: oklch(0.205 0 0);
+	--sidebar-border: oklch(0.922 0 0);
+	--sidebar-ring: oklch(0.708 0 0);
+
+	/* Diff-Encoding Farben (light) */
+	--diff-cpc-only: #b45309;
+	--diff-both: #082453;
+	--diff-ipc-only: #0e7490; /* cyan-700 — better contrast on light bg */
+	--diff-deprecated: #6b7280;
+
+	/* Extended tokens */
+	--bg-hover: oklch(0.955 0.008 300); /* #f0edf3 light lavender */
+	--brand-primary-light: oklch(0.205 0.085 265 / 10%);
+}
+
+/* ========== Dark Mode Tokens ========== */
+
+.dark {
+	--background: oklch(0.145 0 0); /* #0a0a0a */
+	--foreground: oklch(0.97 0 0); /* #f5f5f5 */
+	--card: oklch(0.145 0 0);
+	--card-foreground: oklch(0.97 0 0);
+	--popover: oklch(0.145 0 0);
+	--popover-foreground: oklch(0.97 0 0);
+	--primary: oklch(0.556 0.12 260); /* #4a7cc9 aufgehellt */
+	--primary-foreground: oklch(0.145 0 0);
+	--secondary: oklch(0.205 0 0);
+	--secondary-foreground: oklch(0.97 0 0);
+	--muted: oklch(0.175 0 0); /* #171717 */
+	--muted-foreground: oklch(0.708 0 0); /* #a3a3a3 */
+	--accent: oklch(0.205 0 0);
+	--accent-foreground: oklch(0.97 0 0);
+	--destructive: oklch(0.577 0.245 27.325);
+	--destructive-foreground: oklch(0.97 0 0);
+	--border: oklch(0.25 0 0); /* #2a2a2a */
+	--border-strong: oklch(0.97 0 0); /* #f5f5f5 */
+	--input: oklch(0.25 0 0);
+	--ring: oklch(0.556 0.12 260);
+	--chart-1: oklch(0.488 0.243 264.376);
+	--chart-2: oklch(0.696 0.17 162.48);
+	--chart-3: oklch(0.769 0.188 70.08);
+	--chart-4: oklch(0.627 0.265 303.9);
+	--chart-5: oklch(0.645 0.246 16.439);
+	--sidebar-background: oklch(0.145 0 0);
+	--sidebar-foreground: oklch(0.97 0 0);
+	--sidebar-primary: oklch(0.556 0.12 260);
+	--sidebar-primary-foreground: oklch(0.145 0 0);
+	--sidebar-accent: oklch(0.205 0 0);
+	--sidebar-accent-foreground: oklch(0.97 0 0);
+	--sidebar-border: oklch(0.25 0 0);
+	--sidebar-ring: oklch(0.556 0 0);
+
+	/* Diff-Encoding Farben (dark — brighter for contrast) */
+	--diff-cpc-only: #fbbf24; /* amber-400 */
+	--diff-both: #4a7cc9;
+	--diff-ipc-only: #22d3ee; /* cyan-400 */
+	--diff-deprecated: #9ca3af; /* gray-400 */
+
+	/* Extended tokens */
+	--bg-hover: oklch(0.22 0.008 300);
+	--brand-primary-light: oklch(0.556 0.12 260 / 10%);
+}
+
+/* ========== Base Styles ========== */
+
+@layer base {
+	*,
+	*::before,
+	*::after {
+		@apply border-border;
+	}
+	html {
+		scrollbar-gutter: stable;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+}
+
+/* ========== Focus Indicators (WCAG 2.1 AA) ========== */
+
+:focus-visible {
+	outline: 2px solid var(--ring);
+	outline-offset: 2px;
+}
+
+/* Ensure interactive elements meet 44x44px minimum touch target */
+button,
+a,
+input,
+select,
+textarea,
+[role='button'],
+[role='tab'],
+[role='menuitem'] {
+	min-height: 44px;
+	min-width: 44px;
+}
+
+/* Exception: inline links in text content */
+p a,
+li a,
+td a,
+span a {
+	min-height: unset;
+	min-width: unset;
+}
+
+/* ========== Reduced Motion ========== */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* ========== High Contrast ========== */
+
+@media (prefers-contrast: more) {
+	:root {
+		--border: oklch(0.5 0 0);
+	}
+
+	.dark {
+		--border: oklch(0.6 0 0);
+	}
+
+	*,
+	*::before,
+	*::after {
+		border-width: 2px;
+	}
+}

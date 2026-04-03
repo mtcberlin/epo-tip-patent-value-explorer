@@ -1,0 +1,12 @@
+node_modules
+.git
+.env
+.env.local
+.svelte-kit
+build
+.DS_Store
+*.md
+_bmad*
+.claude
+docs
+notebooks

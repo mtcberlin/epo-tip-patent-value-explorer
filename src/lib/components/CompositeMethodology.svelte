@@ -1,0 +1,83 @@
+<script lang="ts">
+	import type { IndicatorName } from '$lib/scoring/types';
+	import { STORY_LABELS } from '$lib/scoring/types';
+
+	interface IndicatorEntry {
+		name: IndicatorName;
+		storyLabel: string;
+	}
+
+	interface ExcludedEntry extends IndicatorEntry {
+		reason: string;
+	}
+
+	interface Props {
+		includedIndicators: IndicatorEntry[];
+		excludedIndicators: ExcludedEntry[];
+		totalIndicators: number;
+	}
+
+	let { includedIndicators, excludedIndicators, totalIndicators }: Props = $props();
+</script>
+
+<div class="space-y-3 text-xs">
+	<!-- Formula -->
+	<div>
+		<p class="text-muted-foreground mb-1 font-medium">Formula</p>
+		<p class="text-foreground" style="font-family: 'JetBrains Mono', monospace;">
+			Composite = &Sigma;(normalized scores) / n
+		</p>
+	</div>
+
+	<!-- Explanation -->
+	<p class="text-foreground">
+		Equally-weighted average of all available normalized indicator scores. All {totalIndicators} OECD
+		indicators contribute equally — no indicator is privileged over others.
+	</p>
+
+	<!-- Included indicators -->
+	{#if includedIndicators.length > 0}
+		<div>
+			<p class="text-muted-foreground mb-1.5 font-medium">
+				Included ({includedIndicators.length}):
+			</p>
+			<ul class="space-y-1" role="list">
+				{#each includedIndicators as indicator}
+					<li class="flex items-center gap-2">
+						<span class="inline-block h-2 w-2 shrink-0 rounded-full bg-green-600" aria-hidden="true"
+						></span>
+						<span class="text-foreground">{indicator.storyLabel}</span>
+					</li>
+				{/each}
+			</ul>
+		</div>
+	{/if}
+
+	<!-- Excluded indicators -->
+	{#if excludedIndicators.length > 0}
+		<div>
+			<p class="text-muted-foreground mb-1.5 font-medium">
+				Excluded ({excludedIndicators.length}):
+			</p>
+			<ul class="space-y-1" role="list">
+				{#each excludedIndicators as indicator}
+					<li class="flex items-center gap-2">
+						<span
+							class="inline-block h-2 w-2 shrink-0 rounded-full bg-neutral-300"
+							aria-hidden="true"
+						></span>
+						<span class="text-foreground"
+							>{indicator.storyLabel}
+							<span class="text-muted-foreground">— {indicator.reason}</span></span
+						>
+					</li>
+				{/each}
+			</ul>
+		</div>
+	{/if}
+
+	<!-- Normalization note -->
+	<p class="text-muted-foreground">
+		Each indicator is Winsorized at the 98th percentile, then linearly scaled to 0.0–1.0.
+	</p>
+</div>

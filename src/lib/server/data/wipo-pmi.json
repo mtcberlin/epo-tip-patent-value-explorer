@@ -1,0 +1,282 @@
+[
+	{
+		"wipoFieldNumber": 1,
+		"wipoFieldName": "Electrical machinery, apparatus, energy",
+		"activityLevel": 2.7128539975241623,
+		"cagr": -0.15249298037538317,
+		"pmiScore": 2.560361017148779,
+		"classification": "HIGH"
+	},
+	{
+		"wipoFieldNumber": 2,
+		"wipoFieldName": "Audio-visual technology",
+		"activityLevel": 0.7489672930224656,
+		"cagr": -0.31085617352086053,
+		"pmiScore": 0.43811111950160503,
+		"classification": "MEDIUM"
+	},
+	{
+		"wipoFieldNumber": 3,
+		"wipoFieldName": "Telecommunications",
+		"activityLevel": -0.32585199872158643,
+		"cagr": -0.38344795828489503,
+		"pmiScore": -0.7092999570064815,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 4,
+		"wipoFieldName": "Digital communication",
+		"activityLevel": 0.0067355692437098234,
+		"cagr": 1.2129495211319152,
+		"pmiScore": 1.2196850903756251,
+		"classification": "HIGH"
+	},
+	{
+		"wipoFieldNumber": 5,
+		"wipoFieldName": "Basic communication processes",
+		"activityLevel": -1.47114898812735,
+		"cagr": -1.0818448948874309,
+		"pmiScore": -2.552993883014781,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 6,
+		"wipoFieldName": "Computer technology",
+		"activityLevel": 2.1140565599852317,
+		"cagr": 0.9415711514318006,
+		"pmiScore": 3.0556277114170323,
+		"classification": "HIGH"
+	},
+	{
+		"wipoFieldNumber": 7,
+		"wipoFieldName": "IT methods for management",
+		"activityLevel": -1.129721321162884,
+		"cagr": 2.3810397742696137,
+		"pmiScore": 1.2513184531067296,
+		"classification": "HIGH"
+	},
+	{
+		"wipoFieldNumber": 8,
+		"wipoFieldName": "Semiconductors",
+		"activityLevel": -0.07665345812726282,
+		"cagr": 0.036993940207784216,
+		"pmiScore": -0.0396595179194786,
+		"classification": "MEDIUM"
+	},
+	{
+		"wipoFieldNumber": 9,
+		"wipoFieldName": "Optics",
+		"activityLevel": -0.024619284254783047,
+		"cagr": -0.5670577332988204,
+		"pmiScore": -0.5916770175536035,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 10,
+		"wipoFieldName": "Measurement",
+		"activityLevel": 1.5143126368236752,
+		"cagr": 0.031513935746198984,
+		"pmiScore": 1.545826572569874,
+		"classification": "HIGH"
+	},
+	{
+		"wipoFieldNumber": 11,
+		"wipoFieldName": "Analysis of biological materials",
+		"activityLevel": -1.4681397967557177,
+		"cagr": 0.23887038856748968,
+		"pmiScore": -1.2292694081882278,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 12,
+		"wipoFieldName": "Control",
+		"activityLevel": -0.48910830224864305,
+		"cagr": -0.10711157734472064,
+		"pmiScore": -0.5962198795933638,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 13,
+		"wipoFieldName": "Medical technology",
+		"activityLevel": 0.8087488400917011,
+		"cagr": 0.27556426331015693,
+		"pmiScore": 1.084313103401858,
+		"classification": "HIGH"
+	},
+	{
+		"wipoFieldNumber": 14,
+		"wipoFieldName": "Organic fine chemistry",
+		"activityLevel": -0.14468295133652764,
+		"cagr": -1.0154594089489708,
+		"pmiScore": -1.1601423602854983,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 15,
+		"wipoFieldName": "Biotechnology",
+		"activityLevel": -0.6320429744971936,
+		"cagr": 0.4493557303489964,
+		"pmiScore": -0.1826872441481972,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 16,
+		"wipoFieldName": "Pharmaceuticals",
+		"activityLevel": 0.1264803847859172,
+		"cagr": -0.3059499658601321,
+		"pmiScore": -0.17946958107421493,
+		"classification": "MEDIUM"
+	},
+	{
+		"wipoFieldNumber": 17,
+		"wipoFieldName": "Macromolecular chemistry, polymers",
+		"activityLevel": -0.7875380000235146,
+		"cagr": -0.6016366100224116,
+		"pmiScore": -1.3891746100459264,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 18,
+		"wipoFieldName": "Food chemistry",
+		"activityLevel": -1.157514626938546,
+		"cagr": -0.16632493527366776,
+		"pmiScore": -1.3238395622122137,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 19,
+		"wipoFieldName": "Basic materials chemistry",
+		"activityLevel": -0.2621373100300593,
+		"cagr": -0.6884993093957855,
+		"pmiScore": -0.9506366194258448,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 20,
+		"wipoFieldName": "Materials, metallurgy",
+		"activityLevel": -0.4728281741682714,
+		"cagr": -0.4445179041944914,
+		"pmiScore": -0.9173460783627628,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 21,
+		"wipoFieldName": "Surface technology, coating",
+		"activityLevel": -0.6199424387027558,
+		"cagr": -0.24097644698268744,
+		"pmiScore": -0.8609188856854433,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 22,
+		"wipoFieldName": "Micro-structural and nano-technology",
+		"activityLevel": -1.9017414503504064,
+		"cagr": 4.409679290969998,
+		"pmiScore": 2.507937840619592,
+		"classification": "HIGH"
+	},
+	{
+		"wipoFieldNumber": 23,
+		"wipoFieldName": "Chemical engineering",
+		"activityLevel": 0.9229787226899128,
+		"cagr": 0.1340150787873127,
+		"pmiScore": 1.056993801477225,
+		"classification": "HIGH"
+	},
+	{
+		"wipoFieldNumber": 24,
+		"wipoFieldName": "Environmental technology",
+		"activityLevel": -0.5068877517788387,
+		"cagr": 0.14088974274900545,
+		"pmiScore": -0.36599800902983326,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 25,
+		"wipoFieldName": "Handling",
+		"activityLevel": 0.7464615514501023,
+		"cagr": -0.14684435691212655,
+		"pmiScore": 0.5996171945379758,
+		"classification": "MEDIUM"
+	},
+	{
+		"wipoFieldNumber": 26,
+		"wipoFieldName": "Machine tools",
+		"activityLevel": 0.7285267516961321,
+		"cagr": -0.020269518799781793,
+		"pmiScore": 0.7082572328963503,
+		"classification": "MEDIUM"
+	},
+	{
+		"wipoFieldNumber": 27,
+		"wipoFieldName": "Engines, pumps, turbines",
+		"activityLevel": -0.4761864240673973,
+		"cagr": -0.6868216272412337,
+		"pmiScore": -1.1630080513086312,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 28,
+		"wipoFieldName": "Textile and paper machines",
+		"activityLevel": -0.6154310490253034,
+		"cagr": -0.7175694334645268,
+		"pmiScore": -1.3330004824898305,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 29,
+		"wipoFieldName": "Other special machines",
+		"activityLevel": 0.9525925988349324,
+		"cagr": -0.1953529319587485,
+		"pmiScore": 0.7572396668761838,
+		"classification": "MEDIUM"
+	},
+	{
+		"wipoFieldNumber": 30,
+		"wipoFieldName": "Thermal processes and apparatus",
+		"activityLevel": -0.5810137823192553,
+		"cagr": -0.47977414952738234,
+		"pmiScore": -1.0607879318466376,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 31,
+		"wipoFieldName": "Mechanical elements",
+		"activityLevel": 0.36997459941651983,
+		"cagr": -0.38453156715159625,
+		"pmiScore": -0.01455696773507642,
+		"classification": "MEDIUM"
+	},
+	{
+		"wipoFieldNumber": 32,
+		"wipoFieldName": "Transport",
+		"activityLevel": 0.8462031077773416,
+		"cagr": -0.2405235403803848,
+		"pmiScore": 0.6056795673969568,
+		"classification": "MEDIUM"
+	},
+	{
+		"wipoFieldNumber": 33,
+		"wipoFieldName": "Furniture, games",
+		"activityLevel": -0.0816472006600151,
+		"cagr": -0.4908818525545633,
+		"pmiScore": -0.5725290532145784,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 34,
+		"wipoFieldName": "Other consumer goods",
+		"activityLevel": -0.3662162062470035,
+		"cagr": -0.6057478891101811,
+		"pmiScore": -0.9719640953571846,
+		"classification": "LOW"
+	},
+	{
+		"wipoFieldNumber": 35,
+		"wipoFieldName": "Civil engineering",
+		"activityLevel": 0.9921608762015046,
+		"cagr": -0.2179500520294923,
+		"pmiScore": 0.7742108241720123,
+		"classification": "MEDIUM"
+	}
+]

@@ -1,0 +1,46 @@
+# Patent Classification Explorer
+
+> A web application for browsing, comparing, and understanding International Patent Classification (IPC) and Cooperative Patent Classification (CPC) systems. Explore hierarchical classification trees, view side-by-side differences between IPC and CPC, and access AI-generated descriptions for each classification code.
+
+## Overview
+
+Patent Classification Explorer helps patent professionals, researchers, and curious minds navigate the complex world of patent classification systems. It provides structured access to over 80,000 IPC codes and 250,000 CPC codes with full hierarchical browsing, bidirectional mappings, and detailed diff analysis.
+
+The site is publicly accessible at https://patentclassificationexplorer.com
+
+## Key Features
+
+- **Hierarchical Tree Browsing**: Navigate IPC and CPC classification trees with keyboard-accessible WAI-ARIA TreeView components
+- **IPC/CPC Diff View**: Side-by-side comparison showing what CPC adds, modifies, or removes relative to IPC, with triple-encoding (color, badge, border) for accessibility
+- **AI-Generated Descriptions**: Each classification code includes an LLM-generated plain-language description explaining what the code covers
+- **Bidirectional Mapping**: See how IPC codes map to CPC and vice versa via the IPC Concordance
+- **Section Overview Pages**: Visual statistics and D3 charts (treemap, stacked bar, timeline) for each patent section (A-H, Y)
+- **Catchword Index**: Browse the official WIPO catchword index for IPC codes
+
+## Navigation Structure
+
+- `/` — Homepage with section statistics and quick navigation
+- `/ipc/{code}` — IPC classification detail page (e.g., `/ipc/H04L`)
+- `/cpc/{code}` — CPC classification detail page (e.g., `/cpc/H04L`)
+- `/diff/{code}` — Diff view comparing IPC and CPC for a code (e.g., `/diff/H04L`)
+- `/section/{letter}` — Section overview with visualizations (e.g., `/section/h`)
+- `/section/{letter}?view=ipc|cpc|diff` — Section with specific view mode
+- `/guide/ipc-vs-cpc` — Educational guide comparing IPC and CPC systems
+- `/guide/how-to-read-codes` — Guide explaining patent classification code structure
+- `/sitemap-index.xml` — Sitemap index for all pages
+
+## Classification Code Format
+
+Patent classification codes follow a hierarchical structure:
+- **Section**: Single letter A-H (e.g., H = Electricity), plus Y (CPC-only, emerging technologies)
+- **Class**: Section + two digits (e.g., H04)
+- **Subclass**: Class + letter (e.g., H04L)
+- **Group**: Subclass + digits (e.g., H04L 29/00)
+- **Subgroup**: Group + slash + digits (e.g., H04L 29/06)
+
+## Data Sources
+
+- **IPC data**: WIPO International Patent Classification via EPO PATSTAT
+- **CPC data**: Cooperative Patent Classification via EPO PATSTAT
+- **IPC Concordance**: Official IPC-to-CPC mapping table from PATSTAT
+- **Catchword Index**: WIPO's official keyword-to-IPC lookup
