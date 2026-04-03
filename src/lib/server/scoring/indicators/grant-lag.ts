@@ -37,8 +37,8 @@ export async function calculateGrantLag(
 			SELECT
 				a.appln_filing_date,
 				MIN(p.publn_date) AS grant_date
-			FROM \`patstat.tls201_appln\` a
-			JOIN \`patstat.tls211_pat_publn\` p ON a.appln_id = p.appln_id
+			FROM \`tls201_appln\` a
+			JOIN \`tls211_pat_publn\` p ON a.appln_id = p.appln_id
 			WHERE a.appln_id = ${applnId}
 			  AND p.publn_first_grant = 'Y'
 			GROUP BY a.appln_filing_date

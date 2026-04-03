@@ -31,8 +31,8 @@ export async function calculateBackwardCitations(
 	try {
 		const query = `
 			SELECT COUNT(*) AS backward_count
-			FROM \`patstat.tls212_citation\` c
-			JOIN \`patstat.tls211_pat_publn\` p ON c.pat_publn_id = p.pat_publn_id
+			FROM \`tls212_citation\` c
+			JOIN \`tls211_pat_publn\` p ON c.pat_publn_id = p.pat_publn_id
 			WHERE p.appln_id = ${applnId}
 			  AND c.cited_pat_publn_id > 0
 		`.trim();

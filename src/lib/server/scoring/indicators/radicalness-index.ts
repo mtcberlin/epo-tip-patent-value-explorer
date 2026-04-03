@@ -40,10 +40,10 @@ export async function calculateRadicalnessIndex(
 		// Get CPC sections of all backward-cited patents
 		const query = `
 			SELECT SUBSTR(cpc.cpc_class_symbol, 1, 1) AS cpc_section, COUNT(*) AS cnt
-			FROM \`patstat.tls211_pat_publn\` p
-			JOIN \`patstat.tls212_citation\` c ON p.pat_publn_id = c.pat_publn_id
-			JOIN \`patstat.tls211_pat_publn\` cited_pub ON c.cited_pat_publn_id = cited_pub.pat_publn_id
-			JOIN \`patstat.tls224_appln_cpc\` cpc ON cited_pub.appln_id = cpc.appln_id
+			FROM \`tls211_pat_publn\` p
+			JOIN \`tls212_citation\` c ON p.pat_publn_id = c.pat_publn_id
+			JOIN \`tls211_pat_publn\` cited_pub ON c.cited_pat_publn_id = cited_pub.pat_publn_id
+			JOIN \`tls224_appln_cpc\` cpc ON cited_pub.appln_id = cpc.appln_id
 			WHERE p.appln_id = ${applnId}
 			  AND c.cited_pat_publn_id > 0
 			GROUP BY cpc_section

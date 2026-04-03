@@ -32,7 +32,7 @@ export async function calculateFamilySize(
 	try {
 		const query = `
 			SELECT docdb_family_size
-			FROM \`patstat.tls201_appln\`
+			FROM \`tls201_appln\`
 			WHERE appln_id = ${applnId}
 		`.trim();
 

@@ -264,9 +264,9 @@ export async function lookupPatent(
 			p.publn_first_grant, p.publn_claims,
 			a.appln_filing_date, a.granted, a.docdb_family_size, a.nb_citing_docdb_fam,
 			t.appln_title
-		FROM \`patstat.tls211_pat_publn\` p
-		JOIN \`patstat.tls201_appln\` a ON p.appln_id = a.appln_id
-		LEFT JOIN \`patstat.tls202_appln_title\` t ON a.appln_id = t.appln_id AND t.appln_title_lg = 'en'
+		FROM \`tls211_pat_publn\` p
+		JOIN \`tls201_appln\` a ON p.appln_id = a.appln_id
+		LEFT JOIN \`tls202_appln_title\` t ON a.appln_id = t.appln_id AND t.appln_title_lg = 'en'
 		WHERE p.publn_auth = '${auth}' AND p.publn_nr = '${num}' ${kindFilter}
 		ORDER BY p.publn_first_grant DESC, p.publn_date DESC
 		LIMIT 1
@@ -287,8 +287,8 @@ export async function lookupPatent(
 	const [applicantsSettled, cpcSettled, wipoSettled] = await Promise.allSettled([
 		executeQuery(
 			`SELECT pe.person_name
-			 FROM \`patstat.tls207_pers_appln\` pa
-			 JOIN \`patstat.tls206_person\` pe ON pa.person_id = pe.person_id
+			 FROM \`tls207_pers_appln\` pa
+			 JOIN \`tls206_person\` pe ON pa.person_id = pe.person_id
 			 WHERE pa.appln_id = ${applnId} AND pa.applt_seq_nr > 0
 			 ORDER BY pa.applt_seq_nr
 			 LIMIT 10`,
@@ -296,14 +296,14 @@ export async function lookupPatent(
 		),
 		executeQuery(
 			`SELECT cpc_class_symbol
-			 FROM \`patstat.tls224_appln_cpc\` WHERE appln_id = ${applnId}
+			 FROM \`tls224_appln_cpc\` WHERE appln_id = ${applnId}
 			 LIMIT 20`,
 			20
 		),
 		executeQuery(
 			`SELECT DISTINCT tf.techn_field_nr, tf.weight, tfi.techn_sector, tfi.techn_field
-			 FROM \`patstat.tls230_appln_techn_field\` tf
-			 JOIN \`patstat.tls901_techn_field_ipc\` tfi ON tf.techn_field_nr = tfi.techn_field_nr
+			 FROM \`tls230_appln_techn_field\` tf
+			 JOIN \`tls901_techn_field_ipc\` tfi ON tf.techn_field_nr = tfi.techn_field_nr
 			 WHERE tf.appln_id = ${applnId}
 			 ORDER BY tf.weight DESC
 			 LIMIT 1`,

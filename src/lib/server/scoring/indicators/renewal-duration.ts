@@ -37,7 +37,7 @@ export async function calculateRenewalDuration(
 		// tls231 has appln_id directly and fee_renewal_year for renewal fee payments.
 		const query = `
 			SELECT MAX(le.fee_renewal_year) AS max_renewal_year
-			FROM \`patstat.tls231_inpadoc_legal_event\` le
+			FROM \`tls231_inpadoc_legal_event\` le
 			WHERE le.appln_id = ${applnId}
 			  AND le.fee_renewal_year > 0
 		`.trim();

@@ -32,7 +32,7 @@ export async function calculateClaimsCount(
 	try {
 		const query = `
 			SELECT MAX(publn_claims) AS claims_count
-			FROM \`patstat.tls211_pat_publn\`
+			FROM \`tls211_pat_publn\`
 			WHERE appln_id = ${applnId}
 			  AND publn_claims > 0
 		`.trim();

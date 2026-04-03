@@ -32,7 +32,7 @@ export async function calculateForwardCitations(
 	try {
 		const query = `
 			SELECT nb_citing_docdb_fam
-			FROM \`patstat.tls201_appln\`
+			FROM \`tls201_appln\`
 			WHERE appln_id = ${applnId}
 		`.trim();
 

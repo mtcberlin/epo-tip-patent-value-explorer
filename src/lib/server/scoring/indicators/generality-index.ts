@@ -47,10 +47,10 @@ export async function calculateGeneralityIndex(
 		// (mirrors radicalness query but reversed: forward instead of backward)
 		const query = `
 			SELECT SUBSTR(cpc.cpc_class_symbol, 1, 1) AS cpc_section, COUNT(*) AS cnt
-			FROM \`patstat.tls211_pat_publn\` p
-			JOIN \`patstat.tls212_citation\` c ON p.pat_publn_id = c.cited_pat_publn_id
-			JOIN \`patstat.tls211_pat_publn\` citing_pub ON c.pat_publn_id = citing_pub.pat_publn_id
-			JOIN \`patstat.tls224_appln_cpc\` cpc ON citing_pub.appln_id = cpc.appln_id
+			FROM \`tls211_pat_publn\` p
+			JOIN \`tls212_citation\` c ON p.pat_publn_id = c.cited_pat_publn_id
+			JOIN \`tls211_pat_publn\` citing_pub ON c.pat_publn_id = citing_pub.pat_publn_id
+			JOIN \`tls224_appln_cpc\` cpc ON citing_pub.appln_id = cpc.appln_id
 			WHERE p.appln_id = ${applnId}
 			  AND c.pat_publn_id > 0
 			GROUP BY cpc_section
