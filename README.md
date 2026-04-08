@@ -25,7 +25,7 @@ The scoring engine implements eight quality indicators from the OECD Patent Qual
 | 7   | **Patent Family Size**      | Number of jurisdictions where protection is sought                    |
 | 8   | **Grant Lag**               | Time from application filing to grant (efficiency signal)             |
 
-Each indicator is normalized against the patent's **technology-field and filing-year cohort** ((35 WIPO fields + 665 Mainclasses) x 25 filing years = 13,072 cohorts), producing comparable scores on a 0.0-1.0 scale. A composite **Patent Merit Index (PMI)** aggregates all indicators using equal weighting.
+Each indicator is normalized against the patent's **technology-field and filing-year cohort** (35 WIPO fields × 47 filing years (1978–2024) × 8 indicators = 13,072 cohorts), producing comparable scores on a 0.0-1.0 scale. A composite **Patent Merit Index (PMI)** aggregates all indicators using equal weighting.
 
 ## EPO TIP Deployment
 
