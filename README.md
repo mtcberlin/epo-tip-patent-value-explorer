@@ -33,7 +33,10 @@ Patent Value Explorer is designed to run on the EPO Technology and Innovation Pl
 
 ### Using the Notebook Launcher
 
-1. Upload and open `Patent_Value_Explorer.ipynb` in EPO TIP https://tip.epo.org/ 
+
+The only file you need is [`PATSTAT_Value_Explorer.ipynb`](PATSTAT_Value_Explorer.ipynb).
+
+1. Download it from this repo (or: *File → Save Link As…* on the [raw link](https://raw.githubusercontent.com/mtcberlin/epo-tip-patentvalue-explorer/main/PATSTAT_Value_Explorer.ipynb))
 2. Run all cells — the notebook will:
    - Install Node.js and pnpm (if needed)
    - Install project dependencies
