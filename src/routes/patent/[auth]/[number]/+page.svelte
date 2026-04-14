@@ -4,6 +4,7 @@
 	import { parsePatentNumber, toDisplay } from '$lib/utils/patent-number-parser';
 	import type { PatentProfile, IndicatorResult, NormalizedScore } from '$lib/scoring/types';
 	import { AXIS_ORDER } from '$lib/config/chart-config';
+	import { COMPOSITE_INDICATORS } from '$lib/scoring/types';
 	import PatentProfileCard from '$lib/components/PatentProfileCard.svelte';
 	import CompositeScoreDisplay from '$lib/components/CompositeScoreDisplay.svelte';
 	import RadarChartContainer from '$lib/components/RadarChartContainer.svelte';
@@ -282,13 +283,18 @@
 						<aside class="space-y-6">
 							<CompositeScoreDisplay
 								compositeScore={data.data.compositeScore}
-								indicatorCount={merged.indicators.filter((i) => i.available).length}
-								totalIndicators={8}
+								indicatorCount={merged.indicators.filter(
+									(i) =>
+										COMPOSITE_INDICATORS.includes(i.indicator) && i.available
+								).length}
+								totalIndicators={COMPOSITE_INDICATORS.length}
 								{cohortContext}
-								indicators={merged.indicators.map((i) => ({
-									name: i.indicator,
-									available: i.available
-								}))}
+								indicators={merged.indicators
+									.filter((i) => COMPOSITE_INDICATORS.includes(i.indicator))
+									.map((i) => ({
+										name: i.indicator,
+										available: i.available
+									}))}
 								pmiData={data.data.pmiData}
 								wipoFieldName={data.data.wipoFieldName}
 							/>

@@ -31,8 +31,12 @@
 
 	<!-- Explanation -->
 	<p class="text-foreground">
-		Equally-weighted average of all available normalized indicator scores. All {totalIndicators} OECD
-		indicators contribute equally — no indicator is privileged over others.
+		Equally-weighted average over {totalIndicators} OECD composite components (Forward Citations,
+		Family Size, Claims, Originality, Radicalness — Squicciarini &amp; Dernis 2013, §4). Generality
+		is excluded from the standard composite because computing it requires a ~16 GB scan over every
+		citing patent's CPC classes; it is offered on-demand instead. Other PVE indicators (Backward
+		Citations, Patent Scope, Grant Lag, Renewal) are reported standalone and do not feed into this
+		index.
 	</p>
 
 	<!-- Included indicators -->

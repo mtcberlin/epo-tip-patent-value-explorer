@@ -88,14 +88,32 @@ export interface IndicatorResult {
 	error: string | null;
 }
 
+/**
+ * Indicators that contribute to the Composite Quality Index.
+ *
+ * Subset of the OECD §4 6-component composite (Squicciarini & Dernis 2013),
+ * omitting Generality due to its query cost (~16 GB scan per patent on
+ * tls224_appln_cpc — the citing patents' CPC classes).
+ *
+ * Other indicators (backward_citations, patent_scope, grant_lag_days,
+ * renewal_duration) are reported standalone but not part of the composite.
+ */
+export const COMPOSITE_INDICATORS: readonly IndicatorName[] = [
+	'forward_citations',
+	'family_size',
+	'claims_count',
+	'originality_index',
+	'radicalness_index'
+] as const;
+
 /** Result of composite quality index calculation */
 export interface CompositeResult {
 	/** Composite score 0.0-1.0, null if no indicators available */
 	score: number | null;
 	/** Number of indicators included in composite */
 	indicatorCount: number;
-	/** Total possible indicators (always 8) */
-	totalIndicators: 8;
+	/** Total possible indicators in the composite (length of COMPOSITE_INDICATORS) */
+	totalIndicators: number;
 }
 
 /** Error types for AI narrative generation (shared across client and server) */
