@@ -45,7 +45,7 @@ export interface ReferencePatentRow {
 	backwardCitations: number | null;
 	familySize: number | null;
 	generalityIndex: number | null;
-	radicalnessIndex: number | null;
+	originalityIndex: number | null;
 	claimsCount: number | null;
 	grantLagDays: number | null;
 	renewalDuration: number | null;
@@ -53,7 +53,7 @@ export interface ReferencePatentRow {
 	backwardCitationsNormalized: number | null;
 	familySizeNormalized: number | null;
 	generalityIndexNormalized: number | null;
-	radicalnessIndexNormalized: number | null;
+	originalityIndexNormalized: number | null;
 	claimsCountNormalized: number | null;
 	grantLagNormalized: number | null;
 	renewalDurationNormalized: number | null;

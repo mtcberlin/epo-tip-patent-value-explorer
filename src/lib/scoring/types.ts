@@ -14,7 +14,7 @@ export type IndicatorName =
 	| 'backward_citations'
 	| 'family_size'
 	| 'generality_index'
-	| 'radicalness_index'
+	| 'originality_index'
 	| 'claims_count'
 	| 'grant_lag_days'
 	| 'renewal_duration';
@@ -24,7 +24,7 @@ export const INDICATOR_NAMES: readonly IndicatorName[] = [
 	'backward_citations',
 	'family_size',
 	'generality_index',
-	'radicalness_index',
+	'originality_index',
 	'claims_count',
 	'grant_lag_days',
 	'renewal_duration'
@@ -36,7 +36,7 @@ export const STORY_LABELS: Record<IndicatorName, string> = {
 	backward_citations: 'This patent references prior art',
 	family_size: 'This idea matters in these countries',
 	generality_index: 'This idea applies across many fields',
-	radicalness_index: 'This idea draws from diverse technology fields',
+	originality_index: 'This idea draws from diverse technology fields',
 	claims_count: "This is the scope of what's protected",
 	grant_lag_days: 'How quickly this patent was granted',
 	renewal_duration: 'Someone believed enough to keep paying'
@@ -48,7 +48,7 @@ export const TECHNICAL_NAMES: Record<IndicatorName, string> = {
 	backward_citations: 'Backward Citations',
 	family_size: 'Family Size',
 	generality_index: 'Generality Index',
-	radicalness_index: 'Radicalness Index',
+	originality_index: 'Originality Index',
 	claims_count: 'Patent Scope (Claims)',
 	grant_lag_days: 'Grant Lag',
 	renewal_duration: 'Renewal Duration'

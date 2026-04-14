@@ -34,8 +34,8 @@ describe('IndicatorMethodology', () => {
 		expect(gen.formula).toContain('sij');
 	});
 
-	it('radicalness_index methodology describes Herfindahl in formulaDisplay', () => {
-		const rad = METHODOLOGY_CONTENT.radicalness_index;
+	it('originality_index methodology describes Herfindahl in formulaDisplay', () => {
+		const rad = METHODOLOGY_CONTENT.originality_index;
 		expect(rad.formulaDisplay).toContain('Herfindahl');
 		expect(rad.formula).toContain('sij');
 	});

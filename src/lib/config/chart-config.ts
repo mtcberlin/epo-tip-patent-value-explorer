@@ -19,7 +19,7 @@ export const EPO_DIMENSIONS: EpoDimension[] = [
 		name: 'Technological Importance',
 		color: '#1E40AF',
 		darkColor: '#3B82F6',
-		indicators: ['forward_citations', 'backward_citations', 'generality_index', 'radicalness_index']
+		indicators: ['forward_citations', 'backward_citations', 'generality_index', 'originality_index']
 	},
 	{
 		name: 'Market Relevance',
@@ -37,7 +37,7 @@ export const AXIS_ORDER: IndicatorName[] = [
 	'claims_count', // ~4:30
 	'renewal_duration', // ~5:15
 	'grant_lag_days', // ~6 o'clock (bottom)
-	'radicalness_index', // ~9 o'clock
+	'originality_index', // ~9 o'clock
 	'backward_citations' // ~10:30
 ];
 

@@ -35,9 +35,9 @@ const INDICATOR_COLUMNS: Record<IndicatorName, IndicatorColumnMap> = {
 		norm: 'generalityIndexNormalized',
 		dataSource: 'reference_patents'
 	},
-	radicalness_index: {
-		raw: 'radicalnessIndex',
-		norm: 'radicalnessIndexNormalized',
+	originality_index: {
+		raw: 'originalityIndex',
+		norm: 'originalityIndexNormalized',
 		dataSource: 'reference_patents'
 	},
 	claims_count: {

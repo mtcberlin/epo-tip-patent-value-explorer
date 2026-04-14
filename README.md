@@ -18,7 +18,7 @@ The scoring engine implements eight quality indicators from the OECD Patent Qual
 | --- | --------------------------- | --------------------------------------------------------------------- |
 | 1   | **Patent Scope**            | Number of IPC classes (breadth of protection)                         |
 | 2   | **Breakthrough Invention**  | Originality based on citation diversity across technology fields      |
-| 3   | **Radicalness**             | Citations spanning technology classes different from the patent's own |
+| 3   | **Originality**             | Diversity of technology classes among the patent's backward citations |
 | 4   | **Forward Citations (5yr)** | Number of times cited by later patents within 5 years                 |
 | 5   | **Backward Citations**      | Number of prior-art references made                                   |
 | 6   | **Claims Count**            | Number of independent and dependent claims                            |

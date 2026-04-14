@@ -44,7 +44,7 @@ describe('formatRawValue', () => {
 
 	it('formats diversity indices with 2 decimal places', () => {
 		expect(formatRawValue('generality_index', 0.75)).toBe('0.75 fwd. citation score');
-		expect(formatRawValue('radicalness_index', 0.6667)).toBe('0.67 bwd. citation score');
+		expect(formatRawValue('originality_index', 0.6667)).toBe('0.67 bwd. citation score');
 	});
 
 	it('returns null for null values', () => {

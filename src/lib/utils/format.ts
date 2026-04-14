@@ -13,7 +13,7 @@ const RAW_UNITS: Record<IndicatorName, string> = {
 	backward_citations: 'references',
 	family_size: 'countries',
 	generality_index: 'fwd. citation score',
-	radicalness_index: 'bwd. citation score',
+	originality_index: 'bwd. citation score',
 	claims_count: 'claims',
 	grant_lag_days: 'days',
 	renewal_duration: 'years'
@@ -23,7 +23,7 @@ const RAW_UNITS: Record<IndicatorName, string> = {
 export function formatRawValue(indicator: IndicatorName, value: number | null): string | null {
 	if (value === null) return null;
 	const unit = RAW_UNITS[indicator];
-	if (indicator === 'generality_index' || indicator === 'radicalness_index') {
+	if (indicator === 'generality_index' || indicator === 'originality_index') {
 		return `${value.toFixed(2)} ${unit}`;
 	}
 	const rounded = Math.round(value);
@@ -60,7 +60,7 @@ export const INDICATOR_METHODOLOGY: Record<IndicatorName, string> = {
 		'Counts in how many countries patent protection was sought. Filing in more countries signals the applicant expects commercial value across markets.',
 	generality_index:
 		'Measures how broadly this patent is cited across different technology fields (Herfindahl diversity of citing patents\u2019 CPC sections). Higher values mean wider technological impact.',
-	radicalness_index:
+	originality_index:
 		'Measures CPC section diversity of backward citations — how many different technology fields the cited prior art covers (Herfindahl index). Higher values mean the patent draws knowledge from more diverse technology areas.',
 	claims_count:
 		'The number of independent and dependent claims defines the scope of legal protection. More claims generally mean broader protection.',

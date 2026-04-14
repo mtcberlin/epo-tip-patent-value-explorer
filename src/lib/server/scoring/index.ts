@@ -4,7 +4,7 @@ import { calculateForwardCitations } from './indicators/forward-citations';
 import { calculateBackwardCitations } from './indicators/backward-citations';
 import { calculateFamilySize } from './indicators/family-size';
 import { calculateClaimsCount } from './indicators/claims-count';
-import { calculateRadicalnessIndex } from './indicators/radicalness-index';
+import { calculateOriginalityIndex } from './indicators/originality-index';
 import { calculateGrantLag } from './indicators/grant-lag';
 import { calculateRenewalDuration } from './indicators/renewal-duration';
 
@@ -16,7 +16,7 @@ const INDICATOR_ORDER: IndicatorName[] = [
 	'backward_citations',
 	'family_size',
 	'claims_count',
-	'radicalness_index',
+	'originality_index',
 	'grant_lag_days',
 	'renewal_duration'
 	// Generality Index is on-demand only (command), not in this array
@@ -48,7 +48,7 @@ export async function calculateAllIndicators(
 		calculateBackwardCitations(applnId, mcpClient),
 		calculateFamilySize(applnId, mcpClient),
 		calculateClaimsCount(applnId, mcpClient),
-		calculateRadicalnessIndex(applnId, mcpClient),
+		calculateOriginalityIndex(applnId, mcpClient),
 		calculateGrantLag(applnId, mcpClient),
 		calculateRenewalDuration(applnId, mcpClient)
 	]);

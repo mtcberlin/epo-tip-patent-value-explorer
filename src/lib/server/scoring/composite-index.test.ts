@@ -21,7 +21,7 @@ describe('calculateCompositeIndex', () => {
 			makeScore('backward_citations', 0.7),
 			makeScore('family_size', 0.8),
 			makeScore('generality_index', 0.6),
-			makeScore('radicalness_index', 0.5),
+			makeScore('originality_index', 0.5),
 			makeScore('claims_count', 0.8),
 			makeScore('grant_lag_days', 0.4),
 			makeScore('renewal_duration', 0.7)
@@ -40,7 +40,7 @@ describe('calculateCompositeIndex', () => {
 			makeScore('backward_citations', 0.7),
 			makeScore('family_size', null),
 			makeScore('generality_index', null),
-			makeScore('radicalness_index', 0.5),
+			makeScore('originality_index', 0.5),
 			makeScore('claims_count', 0.8),
 			makeScore('grant_lag_days', null),
 			makeScore('renewal_duration', 0.7)

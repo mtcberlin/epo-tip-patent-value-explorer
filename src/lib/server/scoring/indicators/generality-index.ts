@@ -1,7 +1,7 @@
 import type { McpClient } from '$lib/server/mcp/types';
 import { parseMarkdownTable } from '$lib/server/mcp/client';
 import type { IndicatorResult } from '../types';
-import { calculateHerfindahl } from './radicalness-index';
+import { calculateHerfindahl } from './originality-index';
 
 const LOG_PREFIX = '[scoring:generality-index]';
 const DATA_SOURCE = 'tls212_citation + tls224_appln_cpc';
@@ -44,7 +44,7 @@ export async function calculateGeneralityIndex(
 ): Promise<IndicatorResult> {
 	try {
 		// Get CPC sections of all citing patents via publication-level citations
-		// (mirrors radicalness query but reversed: forward instead of backward)
+		// (mirrors originality query but reversed: forward instead of backward)
 		const query = `
 			SELECT SUBSTR(cpc.cpc_class_symbol, 1, 1) AS cpc_section, COUNT(*) AS cnt
 			FROM \`tls211_pat_publn\` p

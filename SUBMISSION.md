@@ -34,12 +34,12 @@ PVE implements eight indicators from Squicciarini & Dernis (2013), "Measuring Pa
 | Backward Citations | 3.2          | Knowledge base breadth — how many prior art references are cited                                  |
 | Family Size        | 3.4          | International market relevance — number of jurisdictions in DOCDB family                          |
 | Generality Index   | 3.5          | Cross-field applicability — Herfindahl diversity of forward citations' technology classes         |
-| Radicalness Index  | 3.6          | Unconventional knowledge sources — Herfindahl diversity of backward citations' technology classes |
+| Originality Index  | 3.6          | Breadth of knowledge sources — Herfindahl diversity of backward citations' technology classes     |
 | Claims Count       | 3.7          | Scope of protection — number of patent claims                                                     |
 | Grant Lag          | 3.8          | Examination complexity — days from filing to grant                                                |
 | Renewal Duration   | 3.9          | Sustained commercial value — maximum renewal fee year paid                                        |
 
-The Herfindahl formula for Generality and Radicalness: H = 1 − Σ(sij²), where sij is the share of citations in CPC section j.
+The Herfindahl formula for Generality and Originality: H = 1 − Σ(sij²), where sij is the share of citations in CPC section j.
 
 ### Cohort Normalization
 

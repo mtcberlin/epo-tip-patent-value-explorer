@@ -26,7 +26,7 @@ describe('methodology-content', () => {
 		['family_size', 'tls201 + tls218 (family links)', '3.4'],
 		['claims_count', 'tls201.nb_claims', '3.7'],
 		['generality_index', 'tls228 + tls224', '3.5'],
-		['radicalness_index', 'tls212 + tls224', '3.6'],
+		['originality_index', 'tls212 + tls224', '3.6'],
 		['grant_lag_days', 'tls201 + tls231', '3.8'],
 		['renewal_duration', 'tls231 (INPADOC legal events)', '3.9']
 	] as const)(
@@ -42,8 +42,8 @@ describe('methodology-content', () => {
 		expect(METHODOLOGY_CONTENT.generality_index.formulaDisplay).toBeTruthy();
 	});
 
-	it('radicalness_index has formulaDisplay', () => {
-		expect(METHODOLOGY_CONTENT.radicalness_index.formulaDisplay).toBeTruthy();
+	it('originality_index has formulaDisplay', () => {
+		expect(METHODOLOGY_CONTENT.originality_index.formulaDisplay).toBeTruthy();
 	});
 
 	it('forward_citations does not have formulaDisplay', () => {

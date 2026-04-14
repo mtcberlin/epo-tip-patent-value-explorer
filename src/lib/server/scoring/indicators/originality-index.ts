@@ -2,20 +2,20 @@ import type { McpClient } from '$lib/server/mcp/types';
 import { parseMarkdownTable } from '$lib/server/mcp/client';
 import type { IndicatorResult } from '../types';
 
-const LOG_PREFIX = '[scoring:radicalness-index]';
+const LOG_PREFIX = '[scoring:originality-index]';
 const DATA_SOURCE = 'tls212_citation + tls224_appln_cpc';
 
 /**
- * Calculates Radicalness Index for a patent.
+ * Calculates Originality Index for a patent.
  *
  * @description Measures the diversity of CPC technology classes among the
  * patent's backward citations (prior art). Uses the Herfindahl formula:
  *
- *   RAD = 1 - SUM(sij^2)
+ *   ORIG = 1 - SUM(sij^2)
  *
  * where sij is the share of backward citations belonging to CPC section j.
- * A high radicalness means the patent draws knowledge from many different
- * technology fields — a hallmark of disruptive innovation.
+ * A high originality means the patent draws knowledge from many different
+ * technology fields, indicating a broad knowledge base.
  *
  * Returns `{ available: false }` when the patent has zero backward citations,
  * as diversity cannot be computed without cited patents.
@@ -24,15 +24,15 @@ const DATA_SOURCE = 'tls212_citation + tls224_appln_cpc';
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value (0.0-1.0) and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.6
+ * @see OECD Patent Quality Indicators, Section 3.6 (Squicciarini & Dernis 2013)
  * @see PATSTAT tables: tls212_citation, tls224_appln_cpc
  * @see Normalization: Winsorization at 98th percentile, cohort-relative 0.0-1.0
  *
  * @example
- * const result = await calculateRadicalnessIndex(12345, mcpClient);
- * // { indicator: 'radicalness_index', value: 0.72, available: true, dataSource: '...', error: null }
+ * const result = await calculateOriginalityIndex(12345, mcpClient);
+ * // { indicator: 'originality_index', value: 0.72, available: true, dataSource: '...', error: null }
  */
-export async function calculateRadicalnessIndex(
+export async function calculateOriginalityIndex(
 	applnId: number,
 	mcpClient: McpClient
 ): Promise<IndicatorResult> {
@@ -55,7 +55,7 @@ export async function calculateRadicalnessIndex(
 		if (rows.length === 0) {
 			console.warn(`${LOG_PREFIX} No backward citation CPC data for applnId=${applnId}`);
 			return {
-				indicator: 'radicalness_index',
+				indicator: 'originality_index',
 				value: null,
 				available: false,
 				dataSource: DATA_SOURCE,
@@ -67,7 +67,7 @@ export async function calculateRadicalnessIndex(
 
 		console.info(`${LOG_PREFIX} OK: ${value.toFixed(4)} for applnId=${applnId}`);
 		return {
-			indicator: 'radicalness_index',
+			indicator: 'originality_index',
 			value,
 			available: true,
 			dataSource: DATA_SOURCE,
@@ -77,7 +77,7 @@ export async function calculateRadicalnessIndex(
 		const message = err instanceof Error ? err.message : 'Unknown error';
 		console.error(`${LOG_PREFIX} FAILED for applnId=${applnId}: ${message}`);
 		return {
-			indicator: 'radicalness_index',
+			indicator: 'originality_index',
 			value: null,
 			available: false,
 			dataSource: DATA_SOURCE,

@@ -20,7 +20,7 @@
 		backward_citations: 'backwardCitationsNormalized',
 		family_size: 'familySizeNormalized',
 		generality_index: 'generalityIndexNormalized',
-		radicalness_index: 'radicalnessIndexNormalized',
+		originality_index: 'originalityIndexNormalized',
 		claims_count: 'claimsCountNormalized',
 		grant_lag_days: 'grantLagNormalized',
 		renewal_duration: 'renewalDurationNormalized'

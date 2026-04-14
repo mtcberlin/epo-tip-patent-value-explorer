@@ -61,8 +61,8 @@ export const METHODOLOGY_CONTENT: Record<IndicatorName, MethodologyContent> = {
 		unavailableReason: 'Requires forward citations > 0 to compute CPC diversity',
 		range: '1.0'
 	},
-	radicalness_index: {
-		formula: 'RAD = 1 - \u03A3(sij\u00B2)',
+	originality_index: {
+		formula: 'ORIG = 1 - \u03A3(sij\u00B2)',
 		formulaDisplay:
 			'Herfindahl index measuring CPC section diversity of backward citations — how many different technology fields the cited prior art covers',
 		patstatSource: 'tls212 + tls224',
