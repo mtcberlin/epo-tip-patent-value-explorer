@@ -48,6 +48,19 @@ def _port_in_use(port: int) -> bool:
         return s.connect_ex(("127.0.0.1", port)) == 0
 
 
+def _kill_port(port: int) -> None:
+    """Best-effort: kill processes holding a TCP port (orphans from prior runs)."""
+    try:
+        result = subprocess.run(
+            ["lsof", "-ti", f"tcp:{port}"],
+            capture_output=True, text=True, timeout=5,
+        )
+        for pid in result.stdout.strip().splitlines():
+            subprocess.run(["kill", "-9", pid], capture_output=True, timeout=5)
+    except (subprocess.SubprocessError, OSError, FileNotFoundError):
+        pass
+
+
 def _wait_for_port(port: int, timeout: int = 15) -> bool:
     deadline = time.time() + timeout
     while time.time() < deadline:
@@ -151,13 +164,16 @@ def launch() -> None:
             _log("⏳ Building app...")
             _run(["npm", "run", "build"])
 
-        # 5. Check ports are free
+        # 5. Free ports from orphaned processes (e.g. kernel restart)
         for port in (MCP_PORT, APP_PORT):
             if _port_in_use(port):
-                raise RuntimeError(
-                    f"Port {port} is already in use. "
-                    f"Run stop() first or restart the kernel."
-                )
+                _log(f"⏳ Port {port} busy, cleaning up orphaned process...")
+                _kill_port(port)
+                time.sleep(0.5)
+                if _port_in_use(port):
+                    raise RuntimeError(
+                        f"Port {port} still in use after cleanup attempt."
+                    )
 
         # 6. Start MCP server
         _log("⏳ Starting mtc.berlin PATSTAT MCP...")
