@@ -96,7 +96,7 @@ def _run(cmd: list[str], cwd: Path = PROJECT_DIR, timeout: int = 600) -> subproc
     return result
 
 
-def stop() -> None:
+def stop(silent: bool = False) -> None:
     """Stop all running Patent Value Explorer processes."""
     for proc in _processes:
         if proc.poll() is None:
@@ -107,6 +107,8 @@ def stop() -> None:
                 proc.kill()
                 proc.wait()
     _processes.clear()
+    if silent:
+        return
     if IN_NOTEBOOK:
         clear_output(wait=True)
         display(HTML(
@@ -217,7 +219,7 @@ def launch() -> None:
 
         if IN_NOTEBOOK:
             clear_output(wait=True)
-            display(HTML(f"""
+            running_html = HTML(f"""
             <div style="font-family:system-ui,sans-serif;text-align:center;padding:32px 32px 8px;">
                 <div style="font-size:15px;color:#059669;font-weight:600;margin-bottom:16px;">
                     ✅ Patent Value Explorer is running
@@ -231,22 +233,38 @@ def launch() -> None:
                 <div style="margin-top:12px;font-size:12px;color:#9ca3af;">
                     Node {node_version} · MCP :{MCP_PORT} · App :{APP_PORT}
                 </div>
-            </div>"""))
+            </div>""")
             try:
                 import ipywidgets as widgets
-                stop_btn = widgets.Button(
-                    description="⏹  Stop Patent Value Explorer",
-                    button_style="danger",
-                    layout=widgets.Layout(width="auto", margin="0 auto 24px"),
-                )
-                stop_btn.on_click(lambda _: stop())
-                box = widgets.HBox(
-                    [stop_btn],
-                    layout=widgets.Layout(justify_content="center"),
-                )
-                display(box)
+                ui_out = widgets.Output()
+                with ui_out:
+                    display(running_html)
+                    stop_btn = widgets.Button(
+                        description="⏹  Stop Patent Value Explorer",
+                        button_style="danger",
+                        layout=widgets.Layout(width="auto", margin="0 auto 24px"),
+                    )
+
+                    def _on_stop(_btn):
+                        stop(silent=True)
+                        ui_out.clear_output(wait=False)
+                        with ui_out:
+                            display(HTML(
+                                "<div style='font-family:system-ui,sans-serif;"
+                                "padding:20px;background:#fef2f2;"
+                                "border-left:4px solid #dc2626;border-radius:8px;'>"
+                                "<div style='font-size:15px;color:#991b1b;'>"
+                                "Patent Value Explorer stopped.</div></div>"
+                            ))
+
+                    stop_btn.on_click(_on_stop)
+                    display(widgets.HBox(
+                        [stop_btn],
+                        layout=widgets.Layout(justify_content="center"),
+                    ))
+                display(ui_out)
             except ImportError:
-                pass
+                display(running_html)
         else:
             print(f"\nPatent Value Explorer is running!\nOpen: {url}")
 
