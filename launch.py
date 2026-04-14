@@ -56,7 +56,8 @@ def _kill_port(port: int) -> None:
         return
     for proc in psutil.process_iter(["pid"]):
         try:
-            for conn in proc.net_connections(kind="tcp"):
+            conns = (proc.net_connections if hasattr(proc, "net_connections") else proc.connections)(kind="tcp")
+            for conn in conns:
                 if conn.laddr and conn.laddr.port == port and conn.status == psutil.CONN_LISTEN:
                     proc.kill()
                     break
