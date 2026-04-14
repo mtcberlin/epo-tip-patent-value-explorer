@@ -15,7 +15,7 @@
 	import AINarrativeBlock from '$lib/components/AINarrativeBlock.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
-	import { Sparkles } from '@lucide/svelte';
+	import { Sparkles, Quote } from '@lucide/svelte';
 	import { settings } from '$lib/stores/settings.svelte';
 
 	const auth = $derived(page.params.auth ?? '');
@@ -100,12 +100,22 @@
 	});
 
 	/**
-	 * Breakthrough flag (OECD §3.12): patent's forward-citation count is in
-	 * the top 1% of its field/year cohort. Renders as a badge near the title.
+	 * Citation-rank tier for the title badge.
+	 *
+	 * - 'breakthrough': forward-citation percentile >= 99 (OECD §3.12)
+	 * - 'highly-cited': forward-citation percentile >= 90
+	 * - 'none':         neither — no badge shown
+	 *
+	 * Returns 'unknown' when the percentile is missing (e.g. cohort stats
+	 * not yet computed for this WIPO field/year).
 	 */
-	const isBreakthrough = $derived(
-		(merged?.scores.find((s) => s.indicator === 'forward_citations')?.percentile ?? 0) >= 99
-	);
+	const citationTier = $derived.by((): 'breakthrough' | 'highly-cited' | 'none' | 'unknown' => {
+		const percentile = merged?.scores.find((s) => s.indicator === 'forward_citations')?.percentile;
+		if (percentile == null) return 'unknown';
+		if (percentile >= 99) return 'breakthrough';
+		if (percentile >= 90) return 'highly-cited';
+		return 'none';
+	});
 
 	/** Ordered indicator pairs for the card grid */
 	const orderedIndicators = $derived.by(() => {
@@ -243,14 +253,23 @@
 					</p>
 					<div class="mt-2 flex flex-wrap items-center gap-3">
 						<h1 class="text-foreground font-mono text-4xl font-semibold">{displayNumber}</h1>
-						{#if isBreakthrough}
+						{#if citationTier === 'breakthrough'}
 							<Badge
 								variant="default"
 								class="gap-1 bg-amber-500 text-amber-50 hover:bg-amber-500"
 								title="Forward citations in top 1% of this WIPO field and filing-year cohort (OECD §3.12 Breakthrough Inventions)"
 							>
 								<Sparkles class="h-3.5 w-3.5" aria-hidden="true" />
-								Breakthrough — Top 1%
+								Breakthrough - Top 1%
+							</Badge>
+						{:else if citationTier === 'highly-cited'}
+							<Badge
+								variant="default"
+								class="gap-1 bg-[#082453] text-white hover:bg-[#082453]"
+								title="Forward citations in top 10% of this WIPO field and filing-year cohort"
+							>
+								<Quote class="h-3.5 w-3.5" aria-hidden="true" />
+								Highly Cited - Top 10%
 							</Badge>
 						{/if}
 					</div>
