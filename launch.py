@@ -218,7 +218,7 @@ def launch() -> None:
         if IN_NOTEBOOK:
             clear_output(wait=True)
             display(HTML(f"""
-            <div style="font-family:system-ui,sans-serif;text-align:center;padding:32px;">
+            <div style="font-family:system-ui,sans-serif;text-align:center;padding:32px 32px 8px;">
                 <div style="font-size:15px;color:#059669;font-weight:600;margin-bottom:16px;">
                     ✅ Patent Value Explorer is running
                 </div>
@@ -232,6 +232,21 @@ def launch() -> None:
                     Node {node_version} · MCP :{MCP_PORT} · App :{APP_PORT}
                 </div>
             </div>"""))
+            try:
+                import ipywidgets as widgets
+                stop_btn = widgets.Button(
+                    description="⏹  Stop Patent Value Explorer",
+                    button_style="danger",
+                    layout=widgets.Layout(width="auto", margin="0 auto 24px"),
+                )
+                stop_btn.on_click(lambda _: stop())
+                box = widgets.HBox(
+                    [stop_btn],
+                    layout=widgets.Layout(justify_content="center"),
+                )
+                display(box)
+            except ImportError:
+                pass
         else:
             print(f"\nPatent Value Explorer is running!\nOpen: {url}")
 
