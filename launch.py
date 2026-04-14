@@ -49,16 +49,19 @@ def _port_in_use(port: int) -> bool:
 
 
 def _kill_port(port: int) -> None:
-    """Best-effort: kill processes holding a TCP port (orphans from prior runs)."""
+    """Best-effort: kill processes listening on a TCP port (orphans from prior runs)."""
     try:
-        result = subprocess.run(
-            ["lsof", "-ti", f"tcp:{port}"],
-            capture_output=True, text=True, timeout=5,
-        )
-        for pid in result.stdout.strip().splitlines():
-            subprocess.run(["kill", "-9", pid], capture_output=True, timeout=5)
-    except (subprocess.SubprocessError, OSError, FileNotFoundError):
-        pass
+        import psutil
+    except ImportError:
+        return
+    for proc in psutil.process_iter(["pid"]):
+        try:
+            for conn in proc.net_connections(kind="tcp"):
+                if conn.laddr and conn.laddr.port == port and conn.status == psutil.CONN_LISTEN:
+                    proc.kill()
+                    break
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            continue
 
 
 def _wait_for_port(port: int, timeout: int = 15) -> bool:
@@ -130,10 +133,11 @@ def launch() -> None:
             ["node", "--version"], capture_output=True, text=True
         ).stdout.strip()
 
-        # 2. Install mtc-patstat-mcp-lite
+        # 2. Install mtc-patstat-mcp-lite + psutil (for orphan port cleanup)
         _log("⏳ Installing mtc.berlin PATSTAT MCP...")
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "--user",
+             "psutil>=5.9",
              "git+https://github.com/mtcberlin/mtc-patstat-mcp-lite.git"
              "@334098aedc7a3242a6fbcdd10034be8bb1b0c55a"],
             capture_output=True, text=True, check=True,
