@@ -6,7 +6,7 @@ Patent Value Explorer (PVE) is a web application that evaluates patent quality u
 
 PVE implements ten OECD Patent Quality indicators and surfaces a Breakthrough Invention flag based on a cohort-relative forward-citation threshold (OECD §3.12) - 11 of the 13 OECD concepts. The two omitted ones (Citations to NPL, §3.10; X/I/Y-only Forward Citations, §3.13) require data outside BigQuery PATSTAT or are empirically redundant with standard Forward Citations.
 
-Each indicator is normalized against the patent's technology-field and filing-year cohort (35 WIPO fields × 47 filing years = 1,645 theoretical cohorts per indicator; sparse cohorts omitted, yielding 16,348 rows across 10 indicators). Raw PATSTAT data is queried in real time through a PATSTAT MCP server that calls `epo.tipdata.patstat` / BigQuery from within the TIP environment.
+Each indicator is normalized against the patent's technology-field and filing-year cohort (35 WIPO fields × 47 filing years, 1978–2024). The shipped cohort table holds **16,348 cohorts** (one percentile distribution per field × year × indicator, sparse combinations omitted). Raw PATSTAT data is queried in real time through a PATSTAT MCP server that calls `epo.tipdata.patstat` / BigQuery from within the TIP environment.
 
 **Deployment model:** the application is designed to run inside the **EPO Technology Intelligence Platform (TIP)** JupyterHub. A one-cell Jupyter notebook (`Patent_Value_Explorer.ipynb`) clones the repo, installs dependencies, builds the SvelteKit app, starts the PATSTAT MCP sidecar, and exposes the app through the JupyterHub proxy. No external hosting is required - the jury can run the submission inside their own TIP session.
 
@@ -59,7 +59,7 @@ PVE normalizes each indicator against a cohort defined by the patent's primary W
 3. **Linear scaling:** map the Winsorized value to 0.0-1.0 within the cohort's p1-p99 range.
 4. **Percentile interpolation:** calculate the patent's approximate percentile position within its cohort.
 
-Cohort statistics are pre-computed from PATSTAT on the EPO Technology Intelligence Platform (TIP) using `epo.tipdata.patstat` against BigQuery, covering filing years 1978-2024. The output is a **static JSON file** (`src/lib/server/data/cohort-stats.json`, 16,348 rows) that ships with the application - no runtime database is required for cohort lookups.
+Cohort statistics are pre-computed from PATSTAT on the EPO Technology Intelligence Platform (TIP) using `epo.tipdata.patstat` against BigQuery, covering filing years 1978-2024. The output is a **static JSON file** (`src/lib/server/data/cohort-stats.json`, **16,348 cohorts**) that ships with the application - no runtime database is required for cohort lookups.
 
 ### Composite Quality Index
 
@@ -231,7 +231,7 @@ The **Generality Index** is excluded from automatic calculation because it requi
 | Tier                      | Storage                                              | Contents                                     | Latency |
 | ------------------------- | ---------------------------------------------------- | -------------------------------------------- | ------- |
 | Reference patents         | `src/lib/server/data/reference-patents.json`         | 14 curated patents with pre-computed scores  | < 100 ms |
-| Cohort statistics         | `src/lib/server/data/cohort-stats.json` (16,348 rows) | Percentile distributions per (field, year, indicator) | < 50 ms |
+| Cohort statistics         | `src/lib/server/data/cohort-stats.json` (16,348 cohorts) | Percentile distributions per (field, year, indicator) | < 50 ms |
 | WIPO PMI / FAI            | `src/lib/server/data/wipo-pmi.json`                  | Field-level activity metadata                | < 50 ms |
 | Patent-result cache       | in-memory `Map` (Node process)                       | Full PatentProfile JSON, per publication     | < 10 ms |
 | Fresh PATSTAT lookup      | MCP server -> BigQuery                               | Raw indicator inputs                         | 5-25 s  |

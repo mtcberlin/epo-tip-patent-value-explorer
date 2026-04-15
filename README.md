@@ -28,7 +28,7 @@ The scoring engine implements ten quality indicators from the OECD Patent Qualit
 | 10  | **Renewal Duration**       | 3.11   | Sustained commercial value - maximum renewal fee year paid                                   |
 | +   | **Breakthrough Invention** | 3.12   | Flag (not a score) - awarded when forward-citation percentile ≥ 99 in the cohort             |
 
-Each indicator is normalized against the patent's **technology-field and filing-year cohort** (35 WIPO fields × 47 filing years, 1978–2024). The shipped cohort statistics (`src/lib/server/data/cohort-stats.json`) contain 16,348 rows across all ten indicators; sparse cohorts are omitted. Scores are rendered on a 0.0–1.0 scale. A **Composite Quality Index** aggregates five of the six OECD composite components (Forward Citations, Family Size, Number of Claims, Originality, Radicalness) by equal weighting; Generality is excluded from the standard composite because computing it requires a ~16 GB per-patent scan and is offered on-demand.
+Each indicator is normalized against the patent's **technology-field and filing-year cohort** (35 WIPO fields × 47 filing years, 1978–2024). The shipped cohort statistics (`src/lib/server/data/cohort-stats.json`) hold **16,348 cohorts** — one percentile distribution per (field, year, indicator) combination — covering all ten indicators; sparse cohorts are omitted. Scores are rendered on a 0.0–1.0 scale. A **Composite Quality Index** aggregates five of the six OECD composite components (Forward Citations, Family Size, Number of Claims, Originality, Radicalness) by equal weighting; Generality is excluded from the standard composite because computing it requires a ~16 GB per-patent scan and is offered on-demand.
 
 ## EPO TIP Deployment
 
@@ -63,7 +63,7 @@ Patent Number (user input)
   +-----------+       +-----------------+
   | Scoring   | ----> | Cohort          |
   | Engine    |       | Normalization   |
-  +-----------+       | (16,348 rows)   |
+  +-----------+       | (16,348 cohorts)|
         |             +-----------------+
         v
   +-----------+       +-----------------+
@@ -82,7 +82,7 @@ Patent Number (user input)
 1. User enters a patent publication number (e.g., EP1000000)
 2. SvelteKit server queries the **PATSTAT MCP Server**, which retrieves patent data from PATSTAT
 3. The **Scoring Engine** computes ten OECD quality indicators from raw patent data
-4. **Cohort Normalization** compares scores against pre-computed statistics (16,348 rows)
+4. **Cohort Normalization** compares scores against pre-computed statistics (16,348 cohorts)
 5. Results are displayed as a **Radar Chart** (LayerChart/D3) with indicator cards
 6. An optional **AI Narrative** (Anthropic Claude API) generates a human-readable patent quality summary
 
