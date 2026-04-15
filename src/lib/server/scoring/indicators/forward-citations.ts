@@ -10,7 +10,7 @@ const DATA_SOURCE = 'tls201.nb_citing_docdb_fam';
  *
  * @description Counts how many times this patent's DOCDB family has been cited
  * by later patents. Forward citations are the most widely used indicator of
- * technological impact — a high count signals that the invention influenced
+ * technological impact - a high count signals that the invention influenced
  * subsequent innovation.
  *
  * @param applnId - PATSTAT application ID

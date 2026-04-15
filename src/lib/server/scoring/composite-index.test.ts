@@ -49,7 +49,7 @@ describe('calculateCompositeIndex', () => {
 			makeScore('claims_count', 0.8),
 			makeScore('originality_index', 0.5),
 			makeScore('radicalness_index', 0.6),
-			// Not in composite — should be excluded:
+			// Not in composite - should be excluded:
 			makeScore('backward_citations', 0.1),
 			makeScore('patent_scope', 0.0),
 			makeScore('grant_lag_days', 0.0),
@@ -59,7 +59,7 @@ describe('calculateCompositeIndex', () => {
 
 		const result = calculateCompositeIndex(scores);
 
-		// Same mean as the previous test — extras don't change the result
+		// Same mean as the previous test - extras don't change the result
 		expect(result.score).toBeCloseTo(0.72, 3);
 		expect(result.indicatorCount).toBe(5);
 	});

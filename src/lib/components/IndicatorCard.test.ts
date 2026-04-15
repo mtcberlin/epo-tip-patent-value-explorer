@@ -18,7 +18,8 @@ describe('IndicatorCard', () => {
 
 	it('each indicator has an OECD section reference', () => {
 		for (const name of INDICATOR_NAMES) {
-			expect(METHODOLOGY_CONTENT[name].oecdSection).toMatch(/^\d+\.\d+$/);
+			// Named sections from Squicciarini, Dernis & Criscuolo (2013), e.g. '"Forward citations"'
+			expect(METHODOLOGY_CONTENT[name].oecdSection).toMatch(/^"[A-Z][A-Za-z ]+( index)?"$/);
 		}
 	});
 

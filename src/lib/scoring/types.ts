@@ -3,9 +3,9 @@
  *
  * This module is safe for both server and client code.
  * All indicator names match the `cohort_stats.indicator` column values exactly.
- * Story labels are the primary display names (UX requirement — "Scientific Elegance").
+ * Story labels are the primary display names (UX requirement - "Scientific Elegance").
  *
- * @see OECD Patent Quality Indicators (2023)
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013)
  */
 
 /** Exact indicator name constants matching cohort_stats.indicator values */
@@ -51,9 +51,9 @@ export const STORY_LABELS: Record<IndicatorName, string> = {
 /**
  * Provenance of each indicator: where it originates from.
  *
- * 'OECD'  — defined in the OECD Patent Quality framework
+ * 'OECD'  - defined in the OECD Patent Quality framework
  *           (Squicciarini, Dernis & Criscuolo 2013).
- * 'PVE'   — added by Patent Value Explorer beyond the OECD set.
+ * 'PVE'   - added by Patent Value Explorer beyond the OECD set.
  *
  * Currently all indicators are OECD-grounded; the type exists so that
  * UI surfaces (badges, legends) can label provenance consistently and
@@ -96,7 +96,7 @@ export interface NormalizedScore {
 	percentile: number | null;
 	available: boolean;
 	cohortSize: number | null;
-	/** True when cohort has fewer than 30 patents — results may be unreliable */
+	/** True when cohort has fewer than 30 patents - results may be unreliable */
 	smallCohort: boolean;
 }
 
@@ -120,7 +120,7 @@ export interface IndicatorResult {
  * Subset of the OECD "Patent quality: composite index" 6-component composite
  * (Squicciarini, Dernis & Criscuolo 2013),
  * omitting Generality due to its query cost (~16 GB scan per patent on
- * tls224_appln_cpc — the citing patents' CPC classes).
+ * tls224_appln_cpc - the citing patents' CPC classes).
  *
  * Other indicators (backward_citations, patent_scope, grant_lag_days,
  * renewal_duration) are reported standalone but not part of the composite.

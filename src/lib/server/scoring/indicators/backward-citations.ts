@@ -9,7 +9,7 @@ const DATA_SOURCE = 'tls212_citation';
  * Calculates Backward Citations for a patent.
  *
  * @description Counts the number of prior art references this patent cites.
- * A high backward citation count indicates a broad knowledge base — the
+ * A high backward citation count indicates a broad knowledge base - the
  * inventors were aware of and building upon many earlier inventions.
  *
  * @param applnId - PATSTAT application ID

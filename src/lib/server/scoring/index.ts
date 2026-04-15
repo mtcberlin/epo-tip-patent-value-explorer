@@ -30,14 +30,14 @@ const INDICATOR_ORDER: IndicatorName[] = [
  * Calculates all available indicators for a patent in parallel.
  *
  * Runs the indicators via Promise.allSettled() to ensure partial results
- * when individual indicators fail. Generality Index is excluded — it is
+ * when individual indicators fail. Generality Index is excluded - it is
  * triggered on-demand via a separate command due to ~16GB query cost.
  *
  * @param applnId - PATSTAT application ID
  * @param mcpClient - MCP Server client instance
- * @returns Array of IndicatorResult — one per indicator
+ * @returns Array of IndicatorResult - one per indicator
  *
- * @see OECD Patent Quality Indicators (2023)
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013)
  */
 export async function calculateAllIndicators(
 	applnId: number,

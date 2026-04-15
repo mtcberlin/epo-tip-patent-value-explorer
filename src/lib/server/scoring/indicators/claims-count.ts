@@ -10,7 +10,7 @@ const DATA_SOURCE = 'tls211_pat_publn.publn_claims';
  *
  * @description Counts the number of claims in the patent publication.
  * Claims define the legal scope of protection. More claims generally
- * indicate broader or more detailed protection — but can also signal
+ * indicate broader or more detailed protection - but can also signal
  * examination complexity.
  *
  * @param applnId - PATSTAT application ID

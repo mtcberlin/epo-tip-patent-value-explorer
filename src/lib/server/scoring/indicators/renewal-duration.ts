@@ -10,7 +10,7 @@ const DATA_SOURCE = 'tls231_inpadoc_legal_event';
  *
  * @description Retrieves the maximum maintenance fee renewal year from
  * INPADOC legal events. A longer renewal duration indicates the patent
- * holder continued paying fees to keep the patent alive — a strong signal
+ * holder continued paying fees to keep the patent alive - a strong signal
  * of long-term perceived commercial value.
  *
  * Returns `{ available: false }` for patents without renewal fee data,

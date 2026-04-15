@@ -2,7 +2,7 @@
  * Per-indicator methodology content for the expandable methodology sections.
  * Data-only configuration — no logic.
  *
- * @see OECD Patent Quality Indicators (2023)
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013)
  */
 import type { IndicatorName } from '$lib/scoring/types';
 

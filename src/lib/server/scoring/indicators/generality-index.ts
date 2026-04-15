@@ -17,7 +17,7 @@ const DATA_SOURCE = 'tls212_citation + tls224_appln_cpc';
  *
  * where sij is the share of citing patents belonging to CPC section j.
  * A high generality means the patent is cited by patents in many different
- * technology fields — indicating broad technological applicability.
+ * technology fields - indicating broad technological applicability.
  *
  * **This indicator is NOT auto-calculated** due to ~16GB BigQuery query cost.
  * It is triggered on-demand via a "Calculate" button in the UI, and the

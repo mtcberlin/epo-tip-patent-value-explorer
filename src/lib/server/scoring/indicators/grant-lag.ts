@@ -10,7 +10,7 @@ const DATA_SOURCE = 'tls201_appln + tls211_pat_publn';
  *
  * @description Measures the number of days between the patent's filing date
  * and its earliest grant date. A longer grant lag typically indicates more
- * complex examination — the patent office needed more time to evaluate the
+ * complex examination - the patent office needed more time to evaluate the
  * claims. Can also reflect applicant strategy (delays, divisionals).
  *
  * Returns `{ available: false }` for patents that have not been granted,

@@ -9,7 +9,7 @@
  *
  * Falls back to null if insufficient data (fewer than 2 indicators per dimension).
  *
- * @see FB-15b — Deterministic archetype classification
+ * @see FB-15b - Deterministic archetype classification
  */
 
 import type { NormalizedScore, IndicatorName } from './types';

@@ -10,7 +10,7 @@ const DATA_SOURCE = 'tls201_appln.docdb_family_size';
  *
  * @description Counts the number of jurisdictions (patent offices) in the
  * patent's DOCDB family. A larger family size indicates the applicant
- * considered the invention valuable enough to file — and pay fees — in
+ * considered the invention valuable enough to file - and pay fees - in
  * multiple countries. It is a proxy for perceived market value.
  *
  * @param applnId - PATSTAT application ID

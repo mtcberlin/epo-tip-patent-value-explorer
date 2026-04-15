@@ -14,7 +14,7 @@ const DATA_SOURCE = 'tls212_citation + tls224_appln_cpc';
  *   RAD = (1 / n_BC) · COUNT(j : CPC(j) ∩ CPC(focal) = ∅)
  *
  * A high radicalness means the patent draws prior art from technology
- * areas different from its own classification — interpreted by the OECD
+ * areas different from its own classification - interpreted by the OECD
  * as a signal of unconventional, potentially disruptive recombination.
  *
  * Distinct from the Originality Index, which measures the *diversity*

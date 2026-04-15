@@ -5,7 +5,7 @@
  * Each patent's raw values are compared against its cohort (same WIPO field
  * and filing year) to produce meaningful relative scores.
  *
- * @see OECD Patent Quality Indicators methodology
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013) - cohort-relative normalization methodology
  */
 
 import type { CohortStatsRow } from '$lib/server/data/types';
@@ -19,7 +19,7 @@ const SMALL_COHORT_THRESHOLD = 30;
  * Winsorization: clamp extreme values to reduce outlier impact.
  * Values below p1 are set to p1, values above p99 are set to p99.
  *
- * @see OECD Patent Quality Indicators — Winsorization at 98%
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013) - Winsorization at 98%
  */
 export function winsorize(rawValue: number, p1: number, p99: number): number {
 	return Math.max(p1, Math.min(p99, rawValue));
@@ -97,7 +97,7 @@ export function normalizeIndicator(
 	}
 
 	if (!cohortStats) {
-		console.warn(`${LOG_PREFIX} No cohort data for ${indicator} — returning raw only`);
+		console.warn(`${LOG_PREFIX} No cohort data for ${indicator} - returning raw only`);
 		return {
 			indicator,
 			raw: rawValue,

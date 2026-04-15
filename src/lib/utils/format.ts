@@ -55,7 +55,7 @@ export function percentileInterpretation(percentile: number, indicator?: Indicat
 
 /**
  * Methodology explanations for each indicator.
- * Based on OECD Patent Quality Indicators (2023).
+ * Based on OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013).
  */
 export const INDICATOR_METHODOLOGY: Record<IndicatorName, string> = {
 	forward_citations:
