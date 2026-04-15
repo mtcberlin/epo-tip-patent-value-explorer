@@ -30,6 +30,8 @@ The scoring engine implements ten quality indicators from the OECD Patent Qualit
 
 Each indicator is normalized against the patent's **technology-field and filing-year cohort** (35 WIPO fields × 47 filing years, 1978–2024). The shipped cohort statistics (`src/lib/server/data/cohort-stats.json`) hold **16,348 cohorts**, one percentile distribution per (field, year, indicator) combination, covering all ten indicators; sparse cohorts are omitted. Scores are rendered on a 0.0–1.0 scale. A **Composite Quality Index** aggregates five of the six OECD composite components (Forward Citations, Family Size, Number of Claims, Originality, Radicalness) by equal weighting; Generality is excluded from the standard composite because computing it requires a ~16 GB per-patent scan and is offered on-demand.
 
+In the radar chart the indicators are grouped into two EPO dimensions, **Technological Importance** and **Market Relevance**, mirroring the OECD paper's framing ("Indicators of Technological and Economic Value"). PVE deliberately does not introduce a third "Legal Strength" axis; that grouping is not part of the OECD framework.
+
 ## EPO TIP Deployment
 
 Patent Value Explorer is designed to run on the EPO Technology and Innovation Platform (TIP) JupyterHub. A Jupyter Notebook launcher is included for one-click deployment.

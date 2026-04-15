@@ -1,8 +1,15 @@
 /**
  * EPO dimension color groups and radar chart axis configuration.
  *
- * These 3 dimensions and their colors are the ONLY non-chrome colors in the app.
- * All pass 3:1 contrast against both light (#fafafa) and dark (#0a0a0a) backgrounds.
+ * Two dimensions, mirroring the OECD source paper's framing
+ * (Squicciarini, Dernis & Criscuolo 2013, "Indicators of Technological
+ * and Economic Value"). PVE deliberately does not introduce a third
+ * "Legal Strength" axis - it is not part of the OECD framework and
+ * would be a PVE invention.
+ *
+ * The dimension colors are the ONLY non-chrome colors in the app and
+ * pass 3:1 contrast against both light (#fafafa) and dark (#0a0a0a)
+ * backgrounds.
  */
 
 import type { IndicatorName } from '$lib/scoring/types';

@@ -79,6 +79,10 @@ Each UI surface that carries either an OECD-defined or a PVE-added element shows
 - **OECD** (EPO blue): each of the 10 indicator cards and their methodology explanations.
 - **PVE** (amber): the EPO Dimensions grouping (Technological Importance / Market Relevance), the Patent Archetype classification (Specialist / Generalist / Disruptor / Incremental), the Field Activity Index (adapted from the WIPO Patent Momentum Indicator), the composite component selection, and the qualitative percentile-interpretation labels ("Exceptionally high", "Average", etc.).
 
+### Why two dimensions, not three
+
+The OECD paper's subtitle ("Indicators of Technological and **Economic** Value") frames the indicator set along exactly two axes; "Legal Strength" is not an OECD dimension. PVE mirrors the OECD framing and groups indicators into Technological Importance and Market Relevance. An earlier draft included a "Legal Strength" axis, but it was an internal PVE invention and was removed during patent-attorney review (FB-02 and FB-03 in the project log) because it was not grounded in the OECD framework. Number of Claims, Patent Scope, Renewal Duration, and Grant Lag are presented under the Market Relevance dimension following the attorney's classification; their underlying OECD-defined formulas are unchanged.
+
 ### Citation-rank title badge
 
 Two tiers are rendered next to the patent title based on the forward-citation percentile:
