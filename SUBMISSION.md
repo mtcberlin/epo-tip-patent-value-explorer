@@ -6,11 +6,11 @@ Patent Value Explorer (PVE) is a web application that evaluates patent quality u
 
 PVE implements ten OECD Patent Quality indicators and surfaces a Breakthrough Invention flag based on a cohort-relative forward-citation threshold (OECD §3.12) - 11 of the 13 OECD concepts. The two omitted ones (Citations to NPL, §3.10; X/I/Y-only Forward Citations, §3.13) require data outside BigQuery PATSTAT or are empirically redundant with standard Forward Citations.
 
-Each indicator is normalized against the patent's technology-field and filing-year cohort (35 WIPO fields × 47 filing years = 1,645 theoretical cohorts per indicator; sparse cohorts omitted, yielding 16,348 rows across 10 indicators). Raw PATSTAT data is queried in real time via BigQuery through an MCP server abstraction.
+Each indicator is normalized against the patent's technology-field and filing-year cohort (35 WIPO fields × 47 filing years = 1,645 theoretical cohorts per indicator; sparse cohorts omitted, yielding 16,348 rows across 10 indicators). Raw PATSTAT data is queried in real time through a PATSTAT MCP server that calls `epo.tipdata.patstat` / BigQuery from within the TIP environment.
 
-**Live Demo:** https://epocodefest2026.mtc.berlin/
+**Deployment model:** the application is designed to run inside the **EPO Technology Intelligence Platform (TIP)** JupyterHub. A one-cell Jupyter notebook (`Patent_Value_Explorer.ipynb`) clones the repo, installs dependencies, builds the SvelteKit app, starts the PATSTAT MCP sidecar, and exposes the app through the JupyterHub proxy. No external hosting is required - the jury can run the submission inside their own TIP session.
 
-**Public Repository:** https://github.com/mtcberlin/epo-tip-patent-value-explorer
+**Public Repository:** <https://github.com/mtcberlin/epo-tip-patent-value-explorer>
 
 ### Team
 
@@ -236,12 +236,33 @@ The **Generality Index** is excluded from automatic calculation because it requi
 | Patent-result cache       | in-memory `Map` (Node process)                       | Full PatentProfile JSON, per publication     | < 10 ms |
 | Fresh PATSTAT lookup      | MCP server -> BigQuery                               | Raw indicator inputs                         | 5-25 s  |
 
-### Deployment
+### Deployment model: EPO TIP JupyterHub
 
-- **Runtime:** Node.js (via `@sveltejs/adapter-node`), Docker multi-stage build.
-- **Hosting:** Hetzner Cloud via Coolify.
-- **Health check:** `GET /health` returns `{status, cohortStatsCount}` so an operator can sanity-check the shipped cohort dataset without hitting PATSTAT.
-- **Port:** 3000 in the container; the notebook launcher in `launch.py` starts the MCP sidecar on :8082 and the app on :52080 for the EPO TIP JupyterHub use case.
+PVE is shipped as a self-contained Jupyter notebook that runs entirely inside the EPO Technology Intelligence Platform. The jury does not need to provision infrastructure.
+
+**Launch flow** (`Patent_Value_Explorer.ipynb` + `launch.py`):
+
+1. The notebook cell clones the repo into `~/patent_value_explorer` (or `git pull --ff-only` on subsequent runs).
+2. `launch.py` verifies a Node.js runtime, then:
+   - `pip install --user` the `mtc-patstat-mcp-lite` MCP server (pinned to a commit SHA) plus `psutil`.
+   - `npm ci --legacy-peer-deps` using the committed `package-lock.json` (reproducible).
+   - `npm run build` to produce the SvelteKit Node-adapter bundle (skipped when the build cache is fresh).
+3. Two local processes are started:
+   - The PATSTAT MCP sidecar on port **8082**.
+   - The SvelteKit app on port **52080** with `PATSTAT_MCP_URL=http://127.0.0.1:8082/mcp`.
+4. The notebook displays a direct link via `JUPYTERHUB_SERVICE_PREFIX + proxy/52080/`, and a Stop button that tears down both processes.
+
+Orphaned ports from a previous kernel are cleaned up automatically before start via `psutil`.
+
+**Why this shape?**
+
+- **Zero infra on the jury's side.** The notebook is the only artefact they interact with.
+- **PATSTAT access is free inside TIP.** Running the BigQuery calls from within the user's TIP session means no API keys, no service accounts, no billing.
+- **Cohort data ships with the app.** `cohort-stats.json` and `reference-patents.json` are static files in the repo, so the static paths (reference patents, homepage, cohort normalization) work immediately - nothing to seed.
+
+**Health check:** `GET /health` returns `{status, cohortStatsCount}` so the launcher can verify both that the app is alive and that the bundled cohort dataset is intact before surfacing the link.
+
+**Optional local development** (not required for the submission) is documented in the README (`npm install`, `npm run dev`) with `PATSTAT_MCP_URL` pointing at a locally-run MCP server.
 
 ### Code Quality
 
