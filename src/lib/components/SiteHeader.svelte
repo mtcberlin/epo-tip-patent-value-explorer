@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { Menu, Settings } from '@lucide/svelte';
+	import { Menu, Settings, Clock } from '@lucide/svelte';
 	import * as Sheet from '$lib/components/ui/sheet';
 	import PatentSearchBar from '$lib/components/PatentSearchBar.svelte';
 	import DepatechLogo from '$lib/components/DepatechLogo.svelte';
 	import SettingsDialog from '$lib/components/SettingsDialog.svelte';
+	import HistorySheet from '$lib/components/HistorySheet.svelte';
 	import { settings } from '$lib/stores/settings.svelte';
+	import { history } from '$lib/stores/history.svelte';
 
 	interface Props {
 		currentPatentNumber?: string;
@@ -34,8 +36,23 @@
 			<div class="flex-1"></div>
 		{/if}
 
-		<!-- Settings (Desktop) -->
+		<!-- History + Settings (Desktop) -->
 		<div class="hidden items-center gap-1 md:flex">
+			<button
+				onclick={() => history.openSheet()}
+				aria-label="Open recently viewed patents"
+				class="text-foreground hover:bg-muted relative inline-flex size-11 items-center justify-center rounded"
+			>
+				<Clock class="size-5" />
+				{#if history.count > 0}
+					<span
+						class="bg-primary text-primary-foreground absolute top-1.5 right-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold"
+						aria-hidden="true"
+					>
+						{history.count}
+					</span>
+				{/if}
+			</button>
 			<button
 				onclick={() => (settings.dialogOpen = true)}
 				aria-label="Open settings"
@@ -78,6 +95,24 @@
 						<button
 							onclick={() => {
 								mobileMenuOpen = false;
+								history.openSheet();
+							}}
+							class="text-foreground hover:bg-muted flex items-center gap-2 rounded px-3 py-3 text-sm transition-colors"
+						>
+							<Clock class="size-4" />
+							Recently viewed
+							{#if history.count > 0}
+								<span
+									class="bg-primary text-primary-foreground ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold"
+									aria-hidden="true"
+								>
+									{history.count}
+								</span>
+							{/if}
+						</button>
+						<button
+							onclick={() => {
+								mobileMenuOpen = false;
 								settings.dialogOpen = true;
 							}}
 							class="text-foreground hover:bg-muted flex items-center gap-2 rounded px-3 py-3 text-sm transition-colors"
@@ -96,3 +131,4 @@
 </header>
 
 <SettingsDialog bind:open={settings.dialogOpen} />
+<HistorySheet />

@@ -17,6 +17,7 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { Sparkles, Quote } from '@lucide/svelte';
 	import { settings } from '$lib/stores/settings.svelte';
+	import { history } from '$lib/stores/history.svelte';
 
 	const auth = $derived(page.params.auth ?? '');
 	const number = $derived(page.params.number ?? '');
@@ -46,6 +47,12 @@
 		promise.then((res) => {
 			if (res.success) {
 				resolvedData = res.data;
+				history.add({
+					publicationNumber: res.data.publicationNumber,
+					auth,
+					number,
+					title: res.data.title ?? ''
+				});
 			}
 		});
 	});
