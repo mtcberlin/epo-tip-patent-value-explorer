@@ -41,17 +41,9 @@
 			<button
 				onclick={() => history.openSheet()}
 				aria-label="Open recently viewed patents"
-				class="text-foreground hover:bg-muted relative inline-flex size-11 items-center justify-center rounded"
+				class="text-foreground hover:bg-muted inline-flex size-11 items-center justify-center rounded"
 			>
 				<Clock class="size-5" />
-				{#if history.count > 0}
-					<span
-						class="bg-primary text-primary-foreground absolute top-1.5 right-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold"
-						aria-hidden="true"
-					>
-						{history.count}
-					</span>
-				{/if}
 			</button>
 			<button
 				onclick={() => (settings.dialogOpen = true)}
@@ -101,14 +93,6 @@
 						>
 							<Clock class="size-4" />
 							Recently viewed
-							{#if history.count > 0}
-								<span
-									class="bg-primary text-primary-foreground ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold"
-									aria-hidden="true"
-								>
-									{history.count}
-								</span>
-							{/if}
 						</button>
 						<button
 							onclick={() => {
