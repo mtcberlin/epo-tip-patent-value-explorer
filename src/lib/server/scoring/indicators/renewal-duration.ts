@@ -21,7 +21,7 @@ const DATA_SOURCE = 'tls231_inpadoc_legal_event';
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value (years) and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.9
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013), "Patent renewal" section
  * @see PATSTAT table: tls231_inpadoc_legal_event (renewal fee events)
  * @see Normalization: Winsorization at 98th percentile, cohort-relative 0.0-1.0
  *

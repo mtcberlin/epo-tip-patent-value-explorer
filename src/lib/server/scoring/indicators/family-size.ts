@@ -17,7 +17,7 @@ const DATA_SOURCE = 'tls201_appln.docdb_family_size';
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.4
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013), "Patent family size" section
  * @see PATSTAT table: tls201_appln (docdb_family_size column)
  * @see Normalization: Winsorization at 98th percentile, cohort-relative 0.0-1.0
  *

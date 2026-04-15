@@ -4,7 +4,7 @@
 
 Patent Value Explorer (PVE) is a SvelteKit web application for evaluating patent quality with indicators from the OECD Patent Quality framework (Squicciarini, Dernis & Criscuolo, 2013). The user enters a patent publication number and receives normalized indicator scores, a radar chart, a composite quality index, and an optional AI-generated narrative.
 
-PVE implements ten OECD Patent Quality indicators and adds a Breakthrough Invention flag driven by a cohort-relative forward-citation threshold (OECD §3.12), covering 11 of the 13 OECD concepts. The two not covered are Citations to Non-Patent Literature (§3.10), which requires a dataset not available in BigQuery PATSTAT, and X/I/Y-only Forward Citations (§3.13), which Squicciarini, Dernis & Criscuolo themselves describe as basically identical to standard forward citations.
+PVE implements ten OECD Patent Quality indicators and adds a Breakthrough Invention flag (corresponding to the "Breakthrough inventions" section of the OECD paper) driven by a cohort-relative forward-citation threshold, covering 11 of the 13 OECD concepts. The two not covered are "Citations to non-patent literature (NPL)", which requires a dataset not available in BigQuery PATSTAT, and the X/I/Y-only variant of Forward Citations, which Squicciarini, Dernis & Criscuolo themselves describe as basically identical to standard forward citations.
 
 Each indicator is normalized against the patent's technology-field and filing-year cohort (35 WIPO fields × 47 filing years, 1978–2024). The shipped cohort table holds **16,348 cohorts** (one percentile distribution per field × year × indicator; sparse combinations are omitted). Raw PATSTAT data is queried at request time through a PATSTAT MCP server that calls `epo.tipdata.patstat` and BigQuery from within the TIP environment.
 
@@ -28,20 +28,20 @@ Each indicator is normalized against the patent's technology-field and filing-ye
 
 PVE implements ten indicators from Squicciarini, Dernis & Criscuolo (2013), "Measuring Patent Quality: Indicators of Technological and Economic Value", OECD Science, Technology and Industry Working Papers, 2013/03:
 
-| Indicator          | OECD Section | Measures                                                                                          |
-| ------------------ | ------------ | ------------------------------------------------------------------------------------------------- |
-| Forward Citations  | 3.1          | Technological impact - how many later patent families cite this patent                            |
-| Backward Citations | 3.2          | Knowledge base breadth - how many prior-art references are cited                                  |
-| Patent Scope       | 3.3          | Technological breadth - distinct CPC subclasses assigned to the patent                            |
-| Family Size        | 3.4          | International market relevance - number of jurisdictions in DOCDB family                          |
-| Generality Index   | 3.5          | Cross-field applicability - Herfindahl diversity of citing patents' CPC sections                  |
-| Originality Index  | 3.6          | Breadth of knowledge sources - Herfindahl diversity of cited patents' CPC sections                |
-| Radicalness Index  | 3.7          | Technological discontinuity - share of backward citations in CPC subclasses outside those of the focal patent |
-| Grant Lag          | 3.8          | Examination speed - days from filing to grant; the UI presents lower values as positive (faster grant = higher normalized score) |
-| Number of Claims   | 3.9          | Scope of legal protection - number of patent claims                                               |
-| Renewal Duration   | 3.11         | Sustained commercial value - maximum renewal fee year paid                                        |
+| Indicator          | OECD paper section      | Measures                                                                                          |
+| ------------------ | ----------------------- | ------------------------------------------------------------------------------------------------- |
+| Forward Citations  | "Forward citations"     | Technological impact - how many later patent families cite this patent                            |
+| Backward Citations | "Backward citations"    | Knowledge base breadth - how many prior-art references are cited                                  |
+| Patent Scope       | "Patent scope"          | Technological breadth - distinct CPC subclasses assigned to the patent                            |
+| Family Size        | "Patent family size"    | International market relevance - number of jurisdictions in DOCDB family                          |
+| Generality Index   | "Generality index"      | Cross-field applicability - Herfindahl diversity of citing patents' CPC sections                  |
+| Originality Index  | "Originality index"     | Breadth of knowledge sources - Herfindahl diversity of cited patents' CPC sections                |
+| Radicalness Index  | "Radicalness index"     | Technological discontinuity - share of backward citations in CPC subclasses outside those of the focal patent |
+| Grant Lag          | "Grant lag"             | Examination speed - days from filing to grant; the UI presents lower values as positive (faster grant = higher normalized score) |
+| Number of Claims   | "Claims"                | Scope of legal protection - number of patent claims                                               |
+| Renewal Duration   | "Patent renewal"        | Sustained commercial value - maximum renewal fee year paid                                        |
 
-In addition, PVE covers **Breakthrough Inventions** (OECD §3.12) as a title-strip badge derived from the forward-citation percentile; no separate score is computed. See "Citation-rank title badge" below for the tier thresholds.
+In addition, PVE covers **Breakthrough Inventions** (OECD "Breakthrough inventions" section) as a title-strip badge derived from the forward-citation percentile; no separate score is computed. See "Citation-rank title badge" below for the tier thresholds.
 
 Formula notes:
 - **Generality / Originality**: Herfindahl diversity `H = 1 - Σ(s_ij²)`, where `s_ij` is the share of (forward- or backward-) citing patents in CPC section `j`.
@@ -61,7 +61,7 @@ Cohort statistics are pre-computed from PATSTAT on TIP using `epo.tipdata.patsta
 
 ### Composite Quality Index
 
-The Composite Quality Index follows the OECD 6-component composite (§4 of the paper cited above), implemented as an equal-weighted mean of five components:
+The Composite Quality Index follows the OECD 6-component composite (the paper's "Patent quality: composite index" section), implemented as an equal-weighted mean of five components:
 
 ```text
 Composite = mean(Forward Citations, Family Size, Number of Claims,
@@ -83,7 +83,7 @@ Each UI surface that carries either an OECD-defined or a PVE-added element shows
 
 Two tiers are rendered next to the patent title based on the forward-citation percentile:
 
-- Percentile ≥ 99: "Breakthrough - Top 1%" (amber), corresponding to OECD §3.12.
+- Percentile ≥ 99: "Breakthrough - Top 1%" (amber), corresponding to the OECD "Breakthrough inventions" definition.
 - Percentile 90-98: "Highly Cited - Top 10%" (EPO blue).
 - Percentile < 90: no badge; the percentile remains visible on the Forward Citations card.
 

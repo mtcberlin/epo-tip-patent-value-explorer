@@ -30,7 +30,7 @@ const DATA_SOURCE = 'tls212_citation + tls224_appln_cpc';
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value (0.0-1.0) and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.5
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013), "Generality index" section
  * @see PATSTAT tables: tls228_docdb_fam_citn, tls224_appln_cpc
  * @see Normalization: Winsorization at 98th percentile, cohort-relative 0.0-1.0
  *

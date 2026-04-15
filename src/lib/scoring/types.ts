@@ -117,7 +117,8 @@ export interface IndicatorResult {
 /**
  * Indicators that contribute to the Composite Quality Index.
  *
- * Subset of the OECD §4 6-component composite (Squicciarini, Dernis & Criscuolo 2013),
+ * Subset of the OECD "Patent quality: composite index" 6-component composite
+ * (Squicciarini, Dernis & Criscuolo 2013),
  * omitting Generality due to its query cost (~16 GB scan per patent on
  * tls224_appln_cpc — the citing patents' CPC classes).
  *

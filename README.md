@@ -1,6 +1,6 @@
 # Patent Value Explorer
 
-A web application that evaluates patent quality using ten indicators from the **OECD Patent Quality framework** (Squicciarini, Dernis & Criscuolo, 2013), plus a Breakthrough Invention flag (OECD §3.12) for patents in the top 1 % of their cohort - 11 of the 13 OECD concepts. Enter a patent publication number and receive a quality profile with normalized scores, a radar chart visualization, and an optional AI-generated narrative summary.
+A web application that evaluates patent quality using ten indicators from the **OECD Patent Quality framework** (Squicciarini, Dernis & Criscuolo, 2013), plus a Breakthrough Invention flag (OECD "Breakthrough inventions") for patents in the top 1 % of their cohort - 11 of the 13 OECD concepts. Enter a patent publication number and receive a quality profile with normalized scores, a radar chart visualization, and an optional AI-generated narrative summary.
 
 Built for the **EPO CodeFest 2026**.
 
@@ -14,19 +14,19 @@ The application runs on the **EPO Technology and Innovation Platform (TIP)** env
 
 The scoring engine implements ten quality indicators from the OECD Patent Quality framework (Squicciarini, M., Dernis, H. & Criscuolo, C., 2013, "Measuring Patent Quality"), plus a Breakthrough Invention flag:
 
-| #   | Indicator                  | OECD § | Description                                                                                  |
-| --- | -------------------------- | ------ | -------------------------------------------------------------------------------------------- |
-| 1   | **Forward Citations**      | 3.1    | Technological impact - how many later patent families cite this patent                       |
-| 2   | **Backward Citations**     | 3.2    | Knowledge base breadth - how many prior-art references are cited                             |
-| 3   | **Patent Scope**           | 3.3    | Technological breadth - distinct CPC subclasses assigned to the patent                       |
-| 4   | **Family Size**            | 3.4    | International market relevance - number of jurisdictions in the DOCDB family                 |
-| 5   | **Generality Index**       | 3.5    | Cross-field applicability - Herfindahl diversity of citing patents' CPC sections (on-demand) |
-| 6   | **Originality Index**      | 3.6    | Breadth of knowledge sources - Herfindahl diversity of cited patents' CPC sections           |
-| 7   | **Radicalness Index**      | 3.7    | Share of backward citations in CPC subclasses outside those of the focal patent              |
-| 8   | **Grant Lag**              | 3.8    | Examination speed - days from filing to grant                                                |
-| 9   | **Number of Claims**       | 3.9    | Scope of legal protection - number of patent claims                                          |
-| 10  | **Renewal Duration**       | 3.11   | Sustained commercial value - maximum renewal fee year paid                                   |
-| +   | **Breakthrough Invention** | 3.12   | Flag (not a score) - awarded when forward-citation percentile ≥ 99 in the cohort             |
+| #   | Indicator                  | OECD paper section      | Description                                                                                  |
+| --- | -------------------------- | ----------------------- | -------------------------------------------------------------------------------------------- |
+| 1   | **Forward Citations**      | "Forward citations"     | Technological impact - how many later patent families cite this patent                       |
+| 2   | **Backward Citations**     | "Backward citations"    | Knowledge base breadth - how many prior-art references are cited                             |
+| 3   | **Patent Scope**           | "Patent scope"          | Technological breadth - distinct CPC subclasses assigned to the patent                       |
+| 4   | **Family Size**            | "Patent family size"    | International market relevance - number of jurisdictions in the DOCDB family                 |
+| 5   | **Generality Index**       | "Generality index"      | Cross-field applicability - Herfindahl diversity of citing patents' CPC sections (on-demand) |
+| 6   | **Originality Index**      | "Originality index"     | Breadth of knowledge sources - Herfindahl diversity of cited patents' CPC sections           |
+| 7   | **Radicalness Index**      | "Radicalness index"     | Share of backward citations in CPC subclasses outside those of the focal patent              |
+| 8   | **Grant Lag**              | "Grant lag"             | Examination speed - days from filing to grant                                                |
+| 9   | **Number of Claims**       | "Claims"                | Scope of legal protection - number of patent claims                                          |
+| 10  | **Renewal Duration**       | "Patent renewal"        | Sustained commercial value - maximum renewal fee year paid                                   |
+| +   | **Breakthrough Invention** | "Breakthrough inventions" | Flag (not a score) - awarded when forward-citation percentile ≥ 99 in the cohort           |
 
 Each indicator is normalized against the patent's **technology-field and filing-year cohort** (35 WIPO fields × 47 filing years, 1978–2024). The shipped cohort statistics (`src/lib/server/data/cohort-stats.json`) hold **16,348 cohorts**, one percentile distribution per (field, year, indicator) combination, covering all ten indicators; sparse cohorts are omitted. Scores are rendered on a 0.0–1.0 scale. A **Composite Quality Index** aggregates five of the six OECD composite components (Forward Citations, Family Size, Number of Claims, Originality, Radicalness) by equal weighting; Generality is excluded from the standard composite because computing it requires a ~16 GB per-patent scan and is offered on-demand.
 

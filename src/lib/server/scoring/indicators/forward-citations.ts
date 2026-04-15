@@ -17,7 +17,7 @@ const DATA_SOURCE = 'tls201.nb_citing_docdb_fam';
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.1
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013), "Forward citations" section
  * @see PATSTAT table: tls201_appln (nb_citing_docdb_fam column)
  * @see Normalization: Winsorization at 98th percentile, cohort-relative 0.0-1.0
  *

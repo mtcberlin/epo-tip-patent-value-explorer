@@ -28,7 +28,7 @@
 			<p class="text-muted-foreground font-medium">Formula</p>
 			<ProvenanceBadge
 				provenance="PVE"
-				title="PVE uses 5 of OECD's 6 composite components - Generality is omitted because computing it requires a ~16 GB scan over every citing patent's CPC classes. The component selection itself follows OECD §4."
+				title="PVE uses 5 of OECD's 6 composite components - Generality is omitted because computing it requires a ~16 GB scan over every citing patent's CPC classes. The component selection itself follows OECD's 'Patent quality: composite index' section."
 			/>
 		</div>
 		<p class="text-foreground" style="font-family: 'JetBrains Mono', monospace;">
@@ -39,7 +39,7 @@
 	<!-- Explanation -->
 	<p class="text-foreground">
 		Equally-weighted average over {totalIndicators} OECD composite components (Forward Citations,
-		Family Size, Claims, Originality, Radicalness - Squicciarini, Dernis &amp; Criscuolo 2013, §4). Generality
+		Family Size, Claims, Originality, Radicalness - Squicciarini, Dernis &amp; Criscuolo 2013, "Patent quality: composite index" section). Generality
 		is excluded from the standard composite because computing it requires a ~16 GB scan over every
 		citing patent's CPC classes; it is offered on-demand instead. Other PVE indicators (Backward
 		Citations, Patent Scope, Grant Lag, Renewal) are reported standalone and do not feed into this

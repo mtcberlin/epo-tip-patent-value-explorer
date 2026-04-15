@@ -16,7 +16,7 @@ const DATA_SOURCE = 'tls212_citation';
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.2
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013), "Backward citations" section
  * @see PATSTAT tables: tls211_pat_publn, tls212_citation (cited_pat_publn_id > 0)
  * @see Normalization: Winsorization at 98th percentile, cohort-relative 0.0-1.0
  *

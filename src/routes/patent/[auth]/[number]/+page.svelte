@@ -102,7 +102,7 @@
 	/**
 	 * Citation-rank tier for the title badge.
 	 *
-	 * - 'breakthrough': forward-citation percentile >= 99 (OECD §3.12)
+	 * - 'breakthrough': forward-citation percentile >= 99 (OECD "Breakthrough inventions")
 	 * - 'highly-cited': forward-citation percentile >= 90
 	 * - 'none':         neither — no badge shown
 	 *
@@ -257,7 +257,7 @@
 							<Badge
 								variant="default"
 								class="gap-1 bg-amber-500 text-amber-50 hover:bg-amber-500"
-								title="Forward citations in top 1% of this WIPO field and filing-year cohort (OECD §3.12 Breakthrough Inventions)"
+								title="Forward citations in top 1% of this WIPO field and filing-year cohort (OECD Breakthrough Inventions)"
 							>
 								<Sparkles class="h-3.5 w-3.5" aria-hidden="true" />
 								Breakthrough - Top 1%

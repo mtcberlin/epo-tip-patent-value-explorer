@@ -20,7 +20,7 @@ const DATA_SOURCE = 'tls201_appln + tls211_pat_publn';
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value (days) and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.8
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013), "Grant lag" section
  * @see PATSTAT tables: tls201_appln (filing date), tls211_pat_publn (grant date via publn_first_grant)
  * @see Normalization: Winsorization at 98th percentile, cohort-relative 0.0-1.0
  *

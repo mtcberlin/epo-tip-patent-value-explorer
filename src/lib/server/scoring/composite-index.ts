@@ -2,7 +2,8 @@
  * Composite Quality Index calculation.
  *
  * @description Equal-weighted mean of a fixed subset of OECD indicators,
- * following Squicciarini, Dernis & Criscuolo (2013) §4 — six components (Forward
+ * following the "Patent quality: composite index" section of
+ * Squicciarini, Dernis & Criscuolo (2013) - six components (Forward
  * Citations, Family Size, Claims, Generality, Originality, Radicalness).
  *
  * PVE excludes Generality from the standard composite because computing
