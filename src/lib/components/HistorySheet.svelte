@@ -40,7 +40,7 @@
 
 <Sheet.Root bind:open={history.sheetOpen}>
 	<Sheet.Content side="right" class="flex w-[340px] flex-col gap-0 p-0 sm:w-[400px]">
-		<Sheet.Header class="border-border border-b px-4 py-3">
+		<Sheet.Header class="border-border border-b py-3 pr-12 pl-4">
 			<Sheet.Title class="flex items-center gap-2 text-base">
 				<Clock class="size-4" aria-hidden="true" />
 				Recently viewed
