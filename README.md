@@ -1,6 +1,6 @@
 # Patent Value Explorer
 
-A web application that evaluates patent quality using ten indicators from the **OECD Patent Quality framework** (Squicciarini & Dernis, 2013), plus a Breakthrough Invention flag (OECD §3.12) for patents in the top 1 % of their cohort - 11 of the 13 OECD concepts. Enter a patent publication number and receive a quality profile with normalized scores, a radar chart visualization, and an optional AI-generated narrative summary.
+A web application that evaluates patent quality using ten indicators from the **OECD Patent Quality framework** (Squicciarini, Dernis & Criscuolo, 2013), plus a Breakthrough Invention flag (OECD §3.12) for patents in the top 1 % of their cohort - 11 of the 13 OECD concepts. Enter a patent publication number and receive a quality profile with normalized scores, a radar chart visualization, and an optional AI-generated narrative summary.
 
 Built for the **EPO CodeFest 2026**.
 
@@ -12,7 +12,7 @@ The application runs on the **EPO Technology and Innovation Platform (TIP)** env
 
 ## OECD Patent Quality Indicators
 
-The scoring engine implements ten quality indicators from the OECD Patent Quality framework (Squicciarini, M. & Dernis, H., 2013, "Measuring Patent Quality"), plus a Breakthrough Invention flag:
+The scoring engine implements ten quality indicators from the OECD Patent Quality framework (Squicciarini, M., Dernis, H. & Criscuolo, C., 2013, "Measuring Patent Quality"), plus a Breakthrough Invention flag:
 
 | #   | Indicator                  | OECD § | Description                                                                                  |
 | --- | -------------------------- | ------ | -------------------------------------------------------------------------------------------- |
@@ -127,7 +127,7 @@ The **Anthropic API key** for AI narrative generation is configured via the in-a
 
 ## AI Tool Disclosure
 
-**Development:** This project was built with assistance from **Claude Code** (Anthropic, Claude Sonnet 4.5 and Claude Opus 4.6 across the CodeFest window), used as a pair-programming tool for code generation and refactoring, test writing, architecture decisions, and documentation drafting. All AI-generated code was reviewed and validated by the developers. The OECD methodology implementation follows the published academic framework (Squicciarini & Dernis, 2013) and was verified against the original indicator definitions.
+**Development:** This project was built with assistance from **Claude Code** (Anthropic, Claude Sonnet 4.5 and Claude Opus 4.6 across the CodeFest window), used as a pair-programming tool for code generation and refactoring, test writing, architecture decisions, and documentation drafting. All AI-generated code was reviewed and validated by the developers. The OECD methodology implementation follows the published academic framework (Squicciarini, Dernis & Criscuolo, 2013) and was verified against the original indicator definitions.
 
 **Runtime:** The optional AI narrative uses the **Claude API** (Anthropic, model `claude-sonnet-4-5-20250929`). The application functions fully without it; all indicator scores, composite, radar chart, badges, and FAI are computed from PATSTAT data alone. Users supply their own Anthropic API key via the in-app Settings dialog; no key is shipped with the deployment.
 

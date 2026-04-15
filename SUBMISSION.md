@@ -2,9 +2,9 @@
 
 ## 1. Executive Summary
 
-Patent Value Explorer (PVE) is a SvelteKit web application for evaluating patent quality with indicators from the OECD Patent Quality framework (Squicciarini & Dernis, 2013). The user enters a patent publication number and receives normalized indicator scores, a radar chart, a composite quality index, and an optional AI-generated narrative.
+Patent Value Explorer (PVE) is a SvelteKit web application for evaluating patent quality with indicators from the OECD Patent Quality framework (Squicciarini, Dernis & Criscuolo, 2013). The user enters a patent publication number and receives normalized indicator scores, a radar chart, a composite quality index, and an optional AI-generated narrative.
 
-PVE implements ten OECD Patent Quality indicators and adds a Breakthrough Invention flag driven by a cohort-relative forward-citation threshold (OECD §3.12), covering 11 of the 13 OECD concepts. The two not covered are Citations to Non-Patent Literature (§3.10), which requires a dataset not available in BigQuery PATSTAT, and X/I/Y-only Forward Citations (§3.13), which Squicciarini & Dernis themselves describe as basically identical to standard forward citations.
+PVE implements ten OECD Patent Quality indicators and adds a Breakthrough Invention flag driven by a cohort-relative forward-citation threshold (OECD §3.12), covering 11 of the 13 OECD concepts. The two not covered are Citations to Non-Patent Literature (§3.10), which requires a dataset not available in BigQuery PATSTAT, and X/I/Y-only Forward Citations (§3.13), which Squicciarini, Dernis & Criscuolo themselves describe as basically identical to standard forward citations.
 
 Each indicator is normalized against the patent's technology-field and filing-year cohort (35 WIPO fields × 47 filing years, 1978–2024). The shipped cohort table holds **16,348 cohorts** (one percentile distribution per field × year × indicator; sparse combinations are omitted). Raw PATSTAT data is queried at request time through a PATSTAT MCP server that calls `epo.tipdata.patstat` and BigQuery from within the TIP environment.
 
@@ -26,7 +26,7 @@ Each indicator is normalized against the patent's technology-field and filing-ye
 
 ### OECD Patent Quality Indicators
 
-PVE implements ten indicators from Squicciarini & Dernis (2013), "Measuring Patent Quality: Indicators of Technological and Economic Value", OECD Science, Technology and Industry Working Papers, 2013/03:
+PVE implements ten indicators from Squicciarini, Dernis & Criscuolo (2013), "Measuring Patent Quality: Indicators of Technological and Economic Value", OECD Science, Technology and Industry Working Papers, 2013/03:
 
 | Indicator          | OECD Section | Measures                                                                                          |
 | ------------------ | ------------ | ------------------------------------------------------------------------------------------------- |

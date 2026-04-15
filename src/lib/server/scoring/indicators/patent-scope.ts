@@ -19,7 +19,7 @@ const DATA_SOURCE = 'tls224_appln_cpc';
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value (count of distinct subclasses) and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.3 (Squicciarini & Dernis 2013)
+ * @see OECD Patent Quality Indicators, Section 3.3 (Squicciarini, Dernis & Criscuolo 2013)
  * @see PATSTAT table: tls224_appln_cpc
  *
  * @example

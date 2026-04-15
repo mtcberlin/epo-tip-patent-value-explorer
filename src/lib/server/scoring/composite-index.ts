@@ -2,7 +2,7 @@
  * Composite Quality Index calculation.
  *
  * @description Equal-weighted mean of a fixed subset of OECD indicators,
- * following Squicciarini & Dernis (2013) §4 — six components (Forward
+ * following Squicciarini, Dernis & Criscuolo (2013) §4 — six components (Forward
  * Citations, Family Size, Claims, Generality, Originality, Radicalness).
  *
  * PVE excludes Generality from the standard composite because computing
@@ -11,7 +11,7 @@
  * UI and is intentionally not part of this index.
  *
  * Backward Citations and Patent Scope are reported as standalone OECD
- * indicators but, per Squicciarini & Dernis, are not part of the
+ * indicators but, per Squicciarini, Dernis & Criscuolo, are not part of the
  * composite definition.
  *
  * Formula: composite = SUM(normalized_i) / COUNT(available_i),

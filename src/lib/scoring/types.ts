@@ -52,7 +52,7 @@ export const STORY_LABELS: Record<IndicatorName, string> = {
  * Provenance of each indicator: where it originates from.
  *
  * 'OECD'  — defined in the OECD Patent Quality framework
- *           (Squicciarini & Dernis 2013).
+ *           (Squicciarini, Dernis & Criscuolo 2013).
  * 'PVE'   — added by Patent Value Explorer beyond the OECD set.
  *
  * Currently all indicators are OECD-grounded; the type exists so that
@@ -117,7 +117,7 @@ export interface IndicatorResult {
 /**
  * Indicators that contribute to the Composite Quality Index.
  *
- * Subset of the OECD §4 6-component composite (Squicciarini & Dernis 2013),
+ * Subset of the OECD §4 6-component composite (Squicciarini, Dernis & Criscuolo 2013),
  * omitting Generality due to its query cost (~16 GB scan per patent on
  * tls224_appln_cpc — the citing patents' CPC classes).
  *
