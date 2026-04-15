@@ -36,12 +36,12 @@ PVE implements ten indicators from Squicciarini & Dernis (2013), "Measuring Pate
 | Family Size        | 3.4          | International market relevance - number of jurisdictions in DOCDB family                          |
 | Generality Index   | 3.5          | Cross-field applicability - Herfindahl diversity of citing patents' CPC sections                  |
 | Originality Index  | 3.6          | Breadth of knowledge sources - Herfindahl diversity of cited patents' CPC sections                |
-| Radicalness Index  | 3.7          | Technological discontinuity - share of backward citations in CPC subclasses outside the focal patent's |
-| Grant Lag          | 3.8          | Examination speed - days from filing to grant (inverse framing in the UI)                         |
+| Radicalness Index  | 3.7          | Technological discontinuity - share of backward citations in CPC subclasses outside those of the focal patent |
+| Grant Lag          | 3.8          | Examination speed - days from filing to grant; the UI presents lower values as positive (faster grant = higher normalized score) |
 | Number of Claims   | 3.9          | Scope of legal protection - number of patent claims                                               |
 | Renewal Duration   | 3.11         | Sustained commercial value - maximum renewal fee year paid                                        |
 
-In addition, PVE shows a **Breakthrough Invention flag** (OECD §3.12) as a title-strip badge when the patent's forward-citation percentile is at or above 99 in its cohort. No separate score is computed; the flag reuses the forward-citation percentile.
+In addition, PVE covers **Breakthrough Inventions** (OECD §3.12) as a title-strip badge derived from the forward-citation percentile; no separate score is computed. See "Citation-rank title badge" below for the tier thresholds.
 
 Formula notes:
 - **Generality / Originality**: Herfindahl diversity `H = 1 - Σ(s_ij²)`, where `s_ij` is the share of (forward- or backward-) citing patents in CPC section `j`.
@@ -61,14 +61,14 @@ Cohort statistics are pre-computed from PATSTAT on TIP using `epo.tipdata.patsta
 
 ### Composite Quality Index
 
-The Composite Quality Index follows the OECD 6-component composite (Squicciarini & Dernis 2013, §4), implemented as an equal-weighted mean of five components:
+The Composite Quality Index follows the OECD 6-component composite (§4 of the paper cited above), implemented as an equal-weighted mean of five components:
 
 ```text
 Composite = mean(Forward Citations, Family Size, Number of Claims,
                  Originality, Radicalness)
 ```
 
-Generality is excluded because computing it requires a ~16 GB per-patent scan over every citing patent's CPC classes (see §4, Query Execution); it is offered on-demand via a button in the UI. Backward Citations, Patent Scope, Grant Lag, and Renewal Duration are reported as standalone indicators but, per Squicciarini & Dernis, are not part of the composite.
+Generality is excluded because computing it requires a ~16 GB per-patent scan over every citing patent's CPC classes (see §4, Query Execution); it is offered on-demand via a button in the UI. Backward Citations, Patent Scope, Grant Lag, and Renewal Duration are reported as standalone indicators but, per the OECD framework, are not part of the composite.
 
 When a component is unavailable (e.g. patent not yet granted, cohort data missing), the composite is computed from the remaining components and the count is shown (e.g. "based on 4 of 5 components").
 
@@ -79,9 +79,13 @@ Each UI surface that carries either an OECD-defined or a PVE-added element shows
 - **OECD** (EPO blue): each of the 10 indicator cards and their methodology explanations.
 - **PVE** (amber): the EPO Dimensions grouping (Technological Importance / Market Relevance), the Patent Archetype classification (Specialist / Generalist / Disruptor / Incremental), the Field Activity Index (adapted from the WIPO Patent Momentum Indicator), the composite component selection, and the qualitative percentile-interpretation labels ("Exceptionally high", "Average", etc.).
 
-### Breakthrough title badge
+### Citation-rank title badge
 
-When the patent's forward-citation percentile is at or above 99, a "Breakthrough - Top 1%" badge (amber) is rendered next to the title. Between percentile 90 and 98, a "Highly Cited - Top 10%" badge (EPO blue) is shown instead. Below 90, no badge is shown; the percentile remains visible on the Forward Citations card.
+Two tiers are rendered next to the patent title based on the forward-citation percentile:
+
+- Percentile ≥ 99: "Breakthrough - Top 1%" (amber), corresponding to OECD §3.12.
+- Percentile 90-98: "Highly Cited - Top 10%" (EPO blue).
+- Percentile < 90: no badge; the percentile remains visible on the Forward Citations card.
 
 ### Field Activity Index (adapted from WIPO PMI)
 
@@ -152,7 +156,7 @@ The homepage displays a curated set of 14 reference patents spanning eight WIPO 
 - Missing indicators are shown as unavailable on the card and on the radar; the app does not surface raw error messages in this case.
 - AI narrative failure is non-fatal: the patent profile is displayed without narrative, and a deterministic archetype classification (computed from the normalized scores) is used as fallback.
 - FAI lookup failure is non-fatal: the patent is displayed without field-activity context.
-- The Composite Quality Index is computed from the components that are available and always shows the count (e.g. "based on 4 of 5 components").
+- The Composite Quality Index is computed from the components that are available; the count is shown on the composite card.
 
 ---
 
@@ -222,7 +226,7 @@ PVE queries the following EPO PATSTAT Global tables:
 
 Nine indicator queries run in parallel per patent via `Promise.allSettled()`: Forward Citations, Backward Citations, Family Size, Number of Claims, Originality Index, Radicalness Index, Patent Scope, Grant Lag, Renewal Duration. Each query is independent; a failure in one does not block the others. The MCP server enforces a 30-second timeout per query.
 
-Generality Index is excluded from the automatic run because it requires aggregating CPC classes across every patent that cites the focal patent (a ~16 GB scan on `tls224_appln_cpc` per request). It is available on-demand via a button on the profile page; once calculated, the result flows through the same normalization path as the other indicators.
+Generality Index is excluded from the automatic run (see §2, Composite Quality Index, for the rationale). It is available on-demand via a button on the profile page; once calculated, the result flows through the same normalization path as the other indicators.
 
 ### Storage Architecture
 
@@ -277,7 +281,7 @@ Optional local development (not required for the submission) is documented in th
 
 ### What PVE provides
 
-PVE is quantitative patent-quality screening based on the OECD Patent Quality framework (Squicciarini & Dernis, 2013). Every score is derived from PATSTAT data and a documented cohort. Scores are reproducible: the same patent produces the same scores given the same cohort statistics.
+PVE is quantitative patent-quality screening based on the OECD Patent Quality framework (see §2 for the full reference). Every score is derived from PATSTAT data and a documented cohort. Scores are reproducible: the same patent produces the same scores given the same cohort statistics.
 
 The OECD/PVE provenance badges separate the two layers visually: the indicators and their formulas are OECD-defined; the story labels, archetypes, dimension grouping, and percentile-interpretation labels are PVE presentation choices, labelled as such.
 
@@ -301,11 +305,7 @@ A fresh lookup takes 10-25 seconds; a cached or reference patent takes under 100
 
 ### Team Members and Organisation
 
-| Name                  | Organisation                           |
-| --------------------- | -------------------------------------- |
-| Arne Krüger           | Moving Targets Consulting (mtc.berlin) |
-| Matthias Schmidbauer  | Moving Targets Consulting (mtc.berlin) |
-| Tom Lichtenstein      | Moving Targets Consulting (mtc.berlin) |
+Team composition and affiliations are listed in Section 1 ("Team"). All three members are affiliated with Moving Targets Consulting (mtc.berlin) and are participating in a personal capacity as natural persons. No other employer or affiliation applies to this submission.
 
 ### AI Tools Used in Development
 
@@ -360,3 +360,11 @@ Per Section 6 of the Rules of Competition:
 
 - **Technology Intelligence Platform (TIP):** used for PATSTAT access via BigQuery during cohort computation and per-patent queries.
 - **PATSTAT Global:** the underlying dataset, accessed through TIP.
+
+### Code Provenance
+
+All code in the main source repository was developed within the CodeFest development window (5 December 2025 - 22 February 2026, extended to 19 April 2026). All dependent libraries are open-source and available free of charge to all participants and the EPO, as listed under "Open-Source Dependencies" above.
+
+### Third-Party IP
+
+No third-party material is included in the repository beyond the listed open-source dependencies and the EPO patent data accessed through TIP (as disclosed above). The code in this repository does not knowingly infringe any third-party intellectual property rights.
