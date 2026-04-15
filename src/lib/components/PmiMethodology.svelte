@@ -2,6 +2,7 @@
 	import * as Collapsible from '$lib/components/ui/collapsible';
 	import { Badge } from '$lib/components/ui/badge';
 	import { ChevronDown } from '@lucide/svelte';
+	import ProvenanceBadge from './ProvenanceBadge.svelte';
 
 	interface Props {
 		pmiClassification: string;
@@ -33,10 +34,10 @@
 
 	const explanation = $derived.by(() => {
 		if (classificationUpper === 'HIGH')
-			return 'This patent is in a high-activity technology field — filing activity is growing rapidly.';
+			return 'This patent is in a high-activity technology field - filing activity is growing rapidly.';
 		if (classificationUpper === 'MEDIUM')
-			return 'This patent is in a moderate-activity technology field — filing activity is stable.';
-		return 'This patent is in a low-activity technology field — filing activity is declining.';
+			return 'This patent is in a moderate-activity technology field - filing activity is stable.';
+		return 'This patent is in a low-activity technology field - filing activity is declining.';
 	});
 
 	function handleKeydown(event: KeyboardEvent) {
@@ -62,9 +63,13 @@
 		<Collapsible.Content>
 			<div id={contentId} class="space-y-3 pt-1 text-xs">
 				<!-- Field name and classification -->
-				<div class="flex items-center gap-2">
+				<div class="flex flex-wrap items-center gap-2">
 					<span class="text-foreground font-medium">{wipoFieldName}</span>
 					<Badge variant={badgeVariant}>{classificationUpper}</Badge>
+					<ProvenanceBadge
+						provenance="PVE"
+						title="The Field Activity Index (FAI) is a Patent Value Explorer metric adapted from the WIPO Patent Momentum Indicator. It is not part of the OECD Patent Quality framework and is not an official WIPO product."
+					/>
 				</div>
 
 				<!-- Contextual explanation -->

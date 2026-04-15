@@ -35,6 +35,11 @@ const INDICATOR_COLUMNS: Record<IndicatorName, IndicatorColumnMap> = {
 		norm: 'generalityIndexNormalized',
 		dataSource: 'reference_patents'
 	},
+	originality_index: {
+		raw: 'originalityIndex',
+		norm: 'originalityIndexNormalized',
+		dataSource: 'reference_patents'
+	},
 	radicalness_index: {
 		raw: 'radicalnessIndex',
 		norm: 'radicalnessIndexNormalized',
@@ -43,6 +48,11 @@ const INDICATOR_COLUMNS: Record<IndicatorName, IndicatorColumnMap> = {
 	claims_count: {
 		raw: 'claimsCount',
 		norm: 'claimsCountNormalized',
+		dataSource: 'reference_patents'
+	},
+	patent_scope: {
+		raw: 'patentScope',
+		norm: 'patentScopeNormalized',
 		dataSource: 'reference_patents'
 	},
 	grant_lag_days: {
@@ -57,6 +67,16 @@ const INDICATOR_COLUMNS: Record<IndicatorName, IndicatorColumnMap> = {
 	}
 };
 
+/**
+ * Reference patent cache was generated before some indicators existed
+ * (e.g. patent_scope, radicalness_index added in PIP-61). Surface a
+ * truthful error instead of letting the UI fall back to the methodology
+ * "unavailableReason", which would suggest the patent itself lacks the
+ * underlying data when in fact the cache simply has not been recomputed.
+ */
+const CACHE_PENDING_ERROR =
+	'Not in reference patent cache (recompute pending)';
+
 export function mapReferenceToProfile(ref: ReferencePatentRow): PatentProfile {
 	const rawIndicators: IndicatorResult[] = INDICATOR_NAMES.map((name) => {
 		const col = INDICATOR_COLUMNS[name];
@@ -66,7 +86,7 @@ export function mapReferenceToProfile(ref: ReferencePatentRow): PatentProfile {
 			value,
 			available: value !== null,
 			dataSource: col.dataSource,
-			error: null
+			error: value === null ? CACHE_PENDING_ERROR : null
 		};
 	});
 

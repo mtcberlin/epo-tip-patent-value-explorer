@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { IndicatorResult, NormalizedScore } from '$lib/scoring/types';
-	import { STORY_LABELS, TECHNICAL_NAMES } from '$lib/scoring/types';
+	import { STORY_LABELS, TECHNICAL_NAMES, INDICATOR_PROVENANCE } from '$lib/scoring/types';
+	import ProvenanceBadge from './ProvenanceBadge.svelte';
 	import { getDimensionForIndicator } from '$lib/config/chart-config';
 	import { ordinalSuffix, formatRawValue, percentileInterpretation } from '$lib/utils/format';
 	import { METHODOLOGY_CONTENT } from '$lib/config/methodology-content';
@@ -68,9 +69,12 @@
 		<h3 class="text-foreground text-sm leading-snug font-medium">
 			{STORY_LABELS[rawIndicator.indicator]}
 		</h3>
-		<p class="text-muted-foreground mt-0.5 text-xs">
-			{TECHNICAL_NAMES[rawIndicator.indicator]}
-		</p>
+		<div class="mt-0.5 flex items-center gap-1.5">
+			<p class="text-muted-foreground text-xs">
+				{TECHNICAL_NAMES[rawIndicator.indicator]}
+			</p>
+			<ProvenanceBadge provenance={INDICATOR_PROVENANCE[rawIndicator.indicator]} />
+		</div>
 
 		<div class="mt-3">
 			{#if isAvailable}
@@ -111,7 +115,7 @@
 				{/if}
 
 				{#if normalizedScore.smallCohort}
-					<p class="text-muted-foreground mt-1 text-[10px]">Small cohort — interpret with care</p>
+					<p class="text-muted-foreground mt-1 text-[10px]">Small cohort - interpret with care</p>
 				{/if}
 			{:else if showCalculateButton}
 				<Button

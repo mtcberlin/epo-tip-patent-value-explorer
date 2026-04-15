@@ -13,8 +13,10 @@ const RAW_UNITS: Record<IndicatorName, string> = {
 	backward_citations: 'references',
 	family_size: 'countries',
 	generality_index: 'fwd. citation score',
-	radicalness_index: 'bwd. citation score',
+	originality_index: 'bwd. citation score',
+	radicalness_index: 'non-overlap share',
 	claims_count: 'claims',
+	patent_scope: 'CPC subclasses',
 	grant_lag_days: 'days',
 	renewal_duration: 'years'
 };
@@ -23,7 +25,11 @@ const RAW_UNITS: Record<IndicatorName, string> = {
 export function formatRawValue(indicator: IndicatorName, value: number | null): string | null {
 	if (value === null) return null;
 	const unit = RAW_UNITS[indicator];
-	if (indicator === 'generality_index' || indicator === 'radicalness_index') {
+	if (
+		indicator === 'generality_index' ||
+		indicator === 'originality_index' ||
+		indicator === 'radicalness_index'
+	) {
 		return `${value.toFixed(2)} ${unit}`;
 	}
 	const rounded = Math.round(value);
@@ -49,7 +55,7 @@ export function percentileInterpretation(percentile: number, indicator?: Indicat
 
 /**
  * Methodology explanations for each indicator.
- * Based on OECD Patent Quality Indicators (2023).
+ * Based on OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013).
  */
 export const INDICATOR_METHODOLOGY: Record<IndicatorName, string> = {
 	forward_citations:
@@ -60,10 +66,14 @@ export const INDICATOR_METHODOLOGY: Record<IndicatorName, string> = {
 		'Counts in how many countries patent protection was sought. Filing in more countries signals the applicant expects commercial value across markets.',
 	generality_index:
 		'Measures how broadly this patent is cited across different technology fields (Herfindahl diversity of citing patents\u2019 CPC sections). Higher values mean wider technological impact.',
-	radicalness_index:
+	originality_index:
 		'Measures CPC section diversity of backward citations — how many different technology fields the cited prior art covers (Herfindahl index). Higher values mean the patent draws knowledge from more diverse technology areas.',
 	claims_count:
 		'The number of independent and dependent claims defines the scope of legal protection. More claims generally mean broader protection.',
+	patent_scope:
+		'Counts the number of distinct CPC subclasses (4-character codes such as "C12N" or "G06F") assigned to the patent. A larger scope means the invention spans more technology areas.',
+	radicalness_index:
+		'Share of the patent\u2019s backward citations whose CPC subclasses do not overlap with the focal patent\u2019s own classification. Higher values mean the patent draws on prior art from technology areas different from its own.',
 	grant_lag_days:
 		'Days between filing and grant. Faster grants provide earlier legal certainty. Compared to patents in the same technology field and filing year.',
 	renewal_duration:

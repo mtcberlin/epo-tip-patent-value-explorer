@@ -10,14 +10,14 @@ const DATA_SOURCE = 'tls211_pat_publn.publn_claims';
  *
  * @description Counts the number of claims in the patent publication.
  * Claims define the legal scope of protection. More claims generally
- * indicate broader or more detailed protection — but can also signal
+ * indicate broader or more detailed protection - but can also signal
  * examination complexity.
  *
  * @param applnId - PATSTAT application ID
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.7
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013), "Claims" section
  * @see PATSTAT table: tls211_pat_publn (publn_claims column)
  * @see Normalization: Winsorization at 98th percentile, cohort-relative 0.0-1.0
  *

@@ -20,8 +20,10 @@
 		backward_citations: 'backwardCitationsNormalized',
 		family_size: 'familySizeNormalized',
 		generality_index: 'generalityIndexNormalized',
+		originality_index: 'originalityIndexNormalized',
 		radicalness_index: 'radicalnessIndexNormalized',
 		claims_count: 'claimsCountNormalized',
+		patent_scope: 'patentScopeNormalized',
 		grant_lag_days: 'grantLagNormalized',
 		renewal_duration: 'renewalDurationNormalized'
 	};

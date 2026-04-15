@@ -6,6 +6,7 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
 	import { ChevronDown, Settings, AlertTriangle } from '@lucide/svelte';
+	import ProvenanceBadge from './ProvenanceBadge.svelte';
 
 	interface Props {
 		narrative: NarrativeResponse | null;
@@ -33,8 +34,12 @@
 			</Card.Header>
 			<Card.Content>
 				{#if narrative.archetype}
-					<div class="mb-3">
+					<div class="mb-3 flex items-center gap-2">
 						<Badge variant="secondary">{narrative.archetype}</Badge>
+						<ProvenanceBadge
+							provenance="PVE"
+							title="Patent Archetypes are a Patent Value Explorer classification, not part of the OECD framework. See 'About patent archetypes' below for the rule set."
+						/>
 					</div>
 				{/if}
 

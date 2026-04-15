@@ -35,31 +35,52 @@ function createErrorClient(error: Error): McpClient {
 }
 
 describe('calculateRadicalnessIndex', () => {
-	it('calculates Herfindahl diversity from CPC sections', async () => {
+	it('returns share of non-overlapping citations', async () => {
 		const { calculateRadicalnessIndex } = await import('./radicalness-index');
-		// 3 CPC sections: A=10, B=10, C=10 → perfectly even → 1 - 3*(1/3)^2 = 0.6667
-		const client = createMockClient(
-			'| cpc_section | cnt |\n| --- | --- |\n| A | 10 |\n| B | 10 |\n| C | 10 |'
-		);
+		const client = createMockClient('| total | radical |\n| --- | --- |\n| 10 | 4 |');
 
 		const result = await calculateRadicalnessIndex(12345, client);
 
-		expect(result.indicator).toBe('radicalness_index');
-		expect(result.available).toBe(true);
-		expect(result.value).toBeCloseTo(0.6667, 3);
+		expect(result).toEqual({
+			indicator: 'radicalness_index',
+			value: 0.4,
+			available: true,
+			dataSource: 'tls212_citation + tls224_appln_cpc',
+			error: null
+		});
 	});
 
-	it('returns 0 for single CPC section (all from one class)', async () => {
+	it('returns 1.0 when every citation is in a different CPC subclass', async () => {
 		const { calculateRadicalnessIndex } = await import('./radicalness-index');
-		const client = createMockClient('| cpc_section | cnt |\n| --- | --- |\n| H | 50 |');
+		const client = createMockClient('| total | radical |\n| --- | --- |\n| 5 | 5 |');
 
 		const result = await calculateRadicalnessIndex(12345, client);
 
+		expect(result.value).toBe(1);
 		expect(result.available).toBe(true);
+	});
+
+	it('returns 0.0 when every citation overlaps with focal CPC', async () => {
+		const { calculateRadicalnessIndex } = await import('./radicalness-index');
+		const client = createMockClient('| total | radical |\n| --- | --- |\n| 7 | 0 |');
+
+		const result = await calculateRadicalnessIndex(12345, client);
+
 		expect(result.value).toBe(0);
+		expect(result.available).toBe(true);
 	});
 
-	it('returns unavailable when no backward citations', async () => {
+	it('returns unavailable when patent has zero backward citations', async () => {
+		const { calculateRadicalnessIndex } = await import('./radicalness-index');
+		const client = createMockClient('| total | radical |\n| --- | --- |\n| 0 | 0 |');
+
+		const result = await calculateRadicalnessIndex(12345, client);
+
+		expect(result.available).toBe(false);
+		expect(result.value).toBeNull();
+	});
+
+	it('returns unavailable on empty MCP result', async () => {
 		const { calculateRadicalnessIndex } = await import('./radicalness-index');
 		const client = createMockClient('No results found');
 
@@ -69,36 +90,13 @@ describe('calculateRadicalnessIndex', () => {
 		expect(result.value).toBeNull();
 	});
 
-	it('returns unavailable on MCP error', async () => {
+	it('returns unavailable on MCP timeout', async () => {
 		const { calculateRadicalnessIndex } = await import('./radicalness-index');
-		const client = createErrorClient(new Error('MCP server error: 500'));
+		const client = createErrorClient(new Error('MCP tool timed out after 30000ms'));
 
 		const result = await calculateRadicalnessIndex(12345, client);
 
 		expect(result.available).toBe(false);
-		expect(result.error).toContain('500');
-	});
-});
-
-describe('calculateHerfindahl', () => {
-	it('returns 0 for single class', async () => {
-		const { calculateHerfindahl } = await import('./radicalness-index');
-		expect(calculateHerfindahl([100])).toBe(0);
-	});
-
-	it('returns correct value for two equal classes', async () => {
-		const { calculateHerfindahl } = await import('./radicalness-index');
-		expect(calculateHerfindahl([50, 50])).toBeCloseTo(0.5, 4);
-	});
-
-	it('returns 0 for empty array', async () => {
-		const { calculateHerfindahl } = await import('./radicalness-index');
-		expect(calculateHerfindahl([])).toBe(0);
-	});
-
-	it('handles skewed distribution', async () => {
-		const { calculateHerfindahl } = await import('./radicalness-index');
-		// 90 from A, 10 from B → 1 - (0.9^2 + 0.1^2) = 1 - 0.82 = 0.18
-		expect(calculateHerfindahl([90, 10])).toBeCloseTo(0.18, 2);
+		expect(result.error).toContain('timed out');
 	});
 });

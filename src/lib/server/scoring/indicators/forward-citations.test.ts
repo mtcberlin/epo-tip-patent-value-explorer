@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import type { McpClient } from '$lib/server/mcp/types';
 
-// Mock parseMarkdownTable — it's imported from the MCP client module
+// Mock parseMarkdownTable - it's imported from the MCP client module
 vi.mock('$lib/server/mcp/client', () => ({
 	parseMarkdownTable: vi.fn((text: string) => {
 		const lines = text.split('\n').filter((l: string) => l.startsWith('|'));

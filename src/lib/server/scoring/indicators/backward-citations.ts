@@ -9,14 +9,14 @@ const DATA_SOURCE = 'tls212_citation';
  * Calculates Backward Citations for a patent.
  *
  * @description Counts the number of prior art references this patent cites.
- * A high backward citation count indicates a broad knowledge base — the
+ * A high backward citation count indicates a broad knowledge base - the
  * inventors were aware of and building upon many earlier inventions.
  *
  * @param applnId - PATSTAT application ID
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.2
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013), "Backward citations" section
  * @see PATSTAT tables: tls211_pat_publn, tls212_citation (cited_pat_publn_id > 0)
  * @see Normalization: Winsorization at 98th percentile, cohort-relative 0.0-1.0
  *

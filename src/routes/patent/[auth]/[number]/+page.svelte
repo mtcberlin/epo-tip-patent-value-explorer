@@ -4,6 +4,7 @@
 	import { parsePatentNumber, toDisplay } from '$lib/utils/patent-number-parser';
 	import type { PatentProfile, IndicatorResult, NormalizedScore } from '$lib/scoring/types';
 	import { AXIS_ORDER } from '$lib/config/chart-config';
+	import { COMPOSITE_INDICATORS } from '$lib/scoring/types';
 	import PatentProfileCard from '$lib/components/PatentProfileCard.svelte';
 	import CompositeScoreDisplay from '$lib/components/CompositeScoreDisplay.svelte';
 	import RadarChartContainer from '$lib/components/RadarChartContainer.svelte';
@@ -13,7 +14,10 @@
 	import LoadingSection from '$lib/components/LoadingSection.svelte';
 	import AINarrativeBlock from '$lib/components/AINarrativeBlock.svelte';
 	import * as Card from '$lib/components/ui/card';
+	import { Badge } from '$lib/components/ui/badge';
+	import { Sparkles, Quote } from '@lucide/svelte';
 	import { settings } from '$lib/stores/settings.svelte';
+	import { history } from '$lib/stores/history.svelte';
 
 	const auth = $derived(page.params.auth ?? '');
 	const number = $derived(page.params.number ?? '');
@@ -43,6 +47,12 @@
 		promise.then((res) => {
 			if (res.success) {
 				resolvedData = res.data;
+				history.add({
+					publicationNumber: res.data.publicationNumber,
+					auth,
+					number,
+					title: res.data.title ?? ''
+				});
 			}
 		});
 	});
@@ -94,6 +104,24 @@
 			: normalizedScores;
 
 		return { indicators, scores };
+	});
+
+	/**
+	 * Citation-rank tier for the title badge.
+	 *
+	 * - 'breakthrough': forward-citation percentile >= 99 (OECD "Breakthrough inventions")
+	 * - 'highly-cited': forward-citation percentile >= 90
+	 * - 'none':         neither — no badge shown
+	 *
+	 * Returns 'unknown' when the percentile is missing (e.g. cohort stats
+	 * not yet computed for this WIPO field/year).
+	 */
+	const citationTier = $derived.by((): 'breakthrough' | 'highly-cited' | 'none' | 'unknown' => {
+		const percentile = merged?.scores.find((s) => s.indicator === 'forward_citations')?.percentile;
+		if (percentile == null) return 'unknown';
+		if (percentile >= 99) return 'breakthrough';
+		if (percentile >= 90) return 'highly-cited';
+		return 'none';
 	});
 
 	/** Ordered indicator pairs for the card grid */
@@ -230,7 +258,28 @@
 					<p class="text-muted-foreground text-sm font-medium tracking-wider uppercase">
 						Patent Profile
 					</p>
-					<h1 class="text-foreground mt-2 font-mono text-4xl font-semibold">{displayNumber}</h1>
+					<div class="mt-2 flex flex-wrap items-center gap-3">
+						<h1 class="text-foreground font-mono text-4xl font-semibold">{displayNumber}</h1>
+						{#if citationTier === 'breakthrough'}
+							<Badge
+								variant="default"
+								class="gap-1 bg-amber-500 text-amber-50 hover:bg-amber-500"
+								title="Forward citations in top 1% of this WIPO field and filing-year cohort (OECD Breakthrough Inventions)"
+							>
+								<Sparkles class="h-3.5 w-3.5" aria-hidden="true" />
+								Breakthrough - Top 1%
+							</Badge>
+						{:else if citationTier === 'highly-cited'}
+							<Badge
+								variant="default"
+								class="gap-1 bg-[#082453] text-white hover:bg-[#082453]"
+								title="Forward citations in top 10% of this WIPO field and filing-year cohort"
+							>
+								<Quote class="h-3.5 w-3.5" aria-hidden="true" />
+								Highly Cited - Top 10%
+							</Badge>
+						{/if}
+					</div>
 
 					<div class="mt-8 grid gap-8 lg:grid-cols-[2fr_1fr]">
 						<!-- Main content area -->
@@ -282,13 +331,18 @@
 						<aside class="space-y-6">
 							<CompositeScoreDisplay
 								compositeScore={data.data.compositeScore}
-								indicatorCount={merged.indicators.filter((i) => i.available).length}
-								totalIndicators={8}
+								indicatorCount={merged.indicators.filter(
+									(i) =>
+										COMPOSITE_INDICATORS.includes(i.indicator) && i.available
+								).length}
+								totalIndicators={COMPOSITE_INDICATORS.length}
 								{cohortContext}
-								indicators={merged.indicators.map((i) => ({
-									name: i.indicator,
-									available: i.available
-								}))}
+								indicators={merged.indicators
+									.filter((i) => COMPOSITE_INDICATORS.includes(i.indicator))
+									.map((i) => ({
+										name: i.indicator,
+										available: i.available
+									}))}
 								pmiData={data.data.pmiData}
 								wipoFieldName={data.data.wipoFieldName}
 							/>

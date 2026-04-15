@@ -3,8 +3,8 @@ import { METHODOLOGY_CONTENT } from '$lib/config/methodology-content';
 import { INDICATOR_NAMES } from '$lib/scoring/types';
 
 describe('IndicatorMethodology', () => {
-	it('all 8 indicators have methodology content available', () => {
-		expect(INDICATOR_NAMES).toHaveLength(8);
+	it('all 10 indicators have methodology content available', () => {
+		expect(INDICATOR_NAMES).toHaveLength(10);
 		for (const name of INDICATOR_NAMES) {
 			const content = METHODOLOGY_CONTENT[name];
 			expect(content).toBeDefined();
@@ -34,8 +34,8 @@ describe('IndicatorMethodology', () => {
 		expect(gen.formula).toContain('sij');
 	});
 
-	it('radicalness_index methodology describes Herfindahl in formulaDisplay', () => {
-		const rad = METHODOLOGY_CONTENT.radicalness_index;
+	it('originality_index methodology describes Herfindahl in formulaDisplay', () => {
+		const rad = METHODOLOGY_CONTENT.originality_index;
 		expect(rad.formulaDisplay).toContain('Herfindahl');
 		expect(rad.formula).toContain('sij');
 	});

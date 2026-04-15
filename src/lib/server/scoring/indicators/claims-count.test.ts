@@ -82,7 +82,7 @@ describe('calculateClaimsCount', () => {
 
 	it('handles null claims (no claims data)', async () => {
 		const { calculateClaimsCount } = await import('./claims-count');
-		// Empty table response — MAX returns no rows when all publn_claims <= 0
+		// Empty table response - MAX returns no rows when all publn_claims <= 0
 		const client = createMockClient('No results found');
 
 		const result = await calculateClaimsCount(12345, client);

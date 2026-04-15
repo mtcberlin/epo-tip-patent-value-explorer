@@ -4,6 +4,7 @@
 	import { AXIS_ORDER, getDimensionForIndicator } from '$lib/config/chart-config';
 	import RadarChart from './RadarChart.svelte';
 	import BarChartAlternative from './BarChartAlternative.svelte';
+	import ProvenanceBadge from './ProvenanceBadge.svelte';
 
 	interface CohortContext {
 		size: number;
@@ -48,8 +49,8 @@
 		</p>
 	{/if}
 
-	<!-- Dimension legend -->
-	<div class="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1">
+	<!-- Dimension legend (PVE-specific grouping, not part of OECD framework) -->
+	<div class="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
 		{#each [{ name: 'Technological Importance', color: isDark ? '#3B82F6' : '#1E40AF' }, { name: 'Market Relevance', color: isDark ? '#14B8A6' : '#0D7377' }] as dim}
 			<span class="text-muted-foreground flex items-center gap-1 text-[10px]">
 				<span class="inline-block h-2 w-2 rounded-full" style="background-color: {dim.color}"
@@ -57,6 +58,10 @@
 				{dim.name}
 			</span>
 		{/each}
+		<ProvenanceBadge
+			provenance="PVE"
+			title="EPO Dimensions are a Patent Value Explorer grouping of the OECD indicators - they are not defined by the OECD framework itself."
+		/>
 	</div>
 
 	<!-- Hidden accessible data table for screen readers -->

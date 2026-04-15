@@ -21,8 +21,8 @@ describe('CompositeMethodology', () => {
 		expect(available.length + excluded.length).toBe(INDICATOR_NAMES.length);
 	});
 
-	it('total indicators is always 8', () => {
-		expect(INDICATOR_NAMES).toHaveLength(8);
+	it('total indicators is always 10', () => {
+		expect(INDICATOR_NAMES).toHaveLength(10);
 	});
 
 	it('story labels are human-readable strings', () => {

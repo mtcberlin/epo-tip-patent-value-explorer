@@ -3,6 +3,7 @@
 	import { ordinalSuffix } from '$lib/utils/format';
 	import { Button } from '$lib/components/ui/button';
 	import { InfoIcon } from '@lucide/svelte';
+	import ProvenanceBadge from './ProvenanceBadge.svelte';
 
 	interface CohortContext {
 		size: number;
@@ -43,7 +44,7 @@
 			<!-- Generality on-demand: not yet calculated -->
 			<div class="bg-muted/50 flex items-start gap-2 rounded-md p-2.5">
 				<InfoIcon class="text-muted-foreground mt-0.5 h-3.5 w-3.5 shrink-0" />
-				<p class="text-muted-foreground">Not yet calculated — approximately 16GB BigQuery query</p>
+				<p class="text-muted-foreground">Not yet calculated - approximately 16GB BigQuery query</p>
 			</div>
 		{:else}
 			<!-- Unavailable indicator reason -->
@@ -121,4 +122,15 @@
 	<p class="text-muted-foreground text-[10px]">
 		Reference: OECD Patent Quality Indicators, Section {methodology.oecdSection}
 	</p>
+
+	<!-- PVE-specific UX layer disclaimer -->
+	<div class="border-border bg-muted/40 mt-2 flex items-start gap-2 rounded-md border p-2">
+		<ProvenanceBadge provenance="PVE" class="mt-0.5 shrink-0" />
+		<p class="text-muted-foreground text-[10px] leading-snug">
+			The headline above each card (e.g. <em>"This idea sparked many others"</em>) and the
+			percentile interpretation labels (<em>"Exceptionally high"</em>, <em>"Average"</em>, …) are
+			Patent Value Explorer phrasings - they are not part of the OECD framework. The underlying
+			indicator and its calculation are OECD-defined.
+		</p>
+	</div>
 </div>

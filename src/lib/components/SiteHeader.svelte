@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { Menu, Settings } from '@lucide/svelte';
+	import { Menu, Settings, Clock } from '@lucide/svelte';
 	import * as Sheet from '$lib/components/ui/sheet';
 	import PatentSearchBar from '$lib/components/PatentSearchBar.svelte';
 	import DepatechLogo from '$lib/components/DepatechLogo.svelte';
 	import SettingsDialog from '$lib/components/SettingsDialog.svelte';
+	import HistorySheet from '$lib/components/HistorySheet.svelte';
 	import { settings } from '$lib/stores/settings.svelte';
+	import { history } from '$lib/stores/history.svelte';
 
 	interface Props {
 		currentPatentNumber?: string;
@@ -34,8 +36,15 @@
 			<div class="flex-1"></div>
 		{/if}
 
-		<!-- Settings (Desktop) -->
+		<!-- History + Settings (Desktop) -->
 		<div class="hidden items-center gap-1 md:flex">
+			<button
+				onclick={() => history.openSheet()}
+				aria-label="Open recently viewed patents"
+				class="text-foreground hover:bg-muted inline-flex size-11 items-center justify-center rounded"
+			>
+				<Clock class="size-5" />
+			</button>
 			<button
 				onclick={() => (settings.dialogOpen = true)}
 				aria-label="Open settings"
@@ -78,6 +87,16 @@
 						<button
 							onclick={() => {
 								mobileMenuOpen = false;
+								history.openSheet();
+							}}
+							class="text-foreground hover:bg-muted flex items-center gap-2 rounded px-3 py-3 text-sm transition-colors"
+						>
+							<Clock class="size-4" />
+							Recently viewed
+						</button>
+						<button
+							onclick={() => {
+								mobileMenuOpen = false;
 								settings.dialogOpen = true;
 							}}
 							class="text-foreground hover:bg-muted flex items-center gap-2 rounded px-3 py-3 text-sm transition-colors"
@@ -96,3 +115,4 @@
 </header>
 
 <SettingsDialog bind:open={settings.dialogOpen} />
+<HistorySheet />

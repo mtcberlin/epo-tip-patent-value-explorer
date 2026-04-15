@@ -8,16 +8,16 @@ import {
 import { INDICATOR_NAMES } from '$lib/scoring/types';
 
 describe('chart-config', () => {
-	it('AXIS_ORDER contains all 8 indicators', () => {
-		expect(AXIS_ORDER).toHaveLength(8);
+	it('AXIS_ORDER contains all 10 indicators', () => {
+		expect(AXIS_ORDER).toHaveLength(10);
 		for (const name of INDICATOR_NAMES) {
 			expect(AXIS_ORDER).toContain(name);
 		}
 	});
 
-	it('EPO_DIMENSIONS covers all 8 indicators', () => {
+	it('EPO_DIMENSIONS covers all 10 indicators', () => {
 		const allIndicators = EPO_DIMENSIONS.flatMap((d) => d.indicators);
-		expect(allIndicators).toHaveLength(8);
+		expect(allIndicators).toHaveLength(10);
 		for (const name of INDICATOR_NAMES) {
 			expect(allIndicators).toContain(name);
 		}

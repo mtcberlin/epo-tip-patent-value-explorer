@@ -1,7 +1,7 @@
 import type { McpClient } from '$lib/server/mcp/types';
 import { parseMarkdownTable } from '$lib/server/mcp/client';
 import type { IndicatorResult } from '../types';
-import { calculateHerfindahl } from './radicalness-index';
+import { calculateHerfindahl } from './originality-index';
 
 const LOG_PREFIX = '[scoring:generality-index]';
 const DATA_SOURCE = 'tls212_citation + tls224_appln_cpc';
@@ -17,7 +17,7 @@ const DATA_SOURCE = 'tls212_citation + tls224_appln_cpc';
  *
  * where sij is the share of citing patents belonging to CPC section j.
  * A high generality means the patent is cited by patents in many different
- * technology fields — indicating broad technological applicability.
+ * technology fields - indicating broad technological applicability.
  *
  * **This indicator is NOT auto-calculated** due to ~16GB BigQuery query cost.
  * It is triggered on-demand via a "Calculate" button in the UI, and the
@@ -30,7 +30,7 @@ const DATA_SOURCE = 'tls212_citation + tls224_appln_cpc';
  * @param mcpClient - MCP Server client instance
  * @returns Raw indicator value (0.0-1.0) and metadata
  *
- * @see OECD Patent Quality Indicators, Section 3.5
+ * @see OECD Measuring Patent Quality (Squicciarini, Dernis & Criscuolo 2013), "Generality index" section
  * @see PATSTAT tables: tls228_docdb_fam_citn, tls224_appln_cpc
  * @see Normalization: Winsorization at 98th percentile, cohort-relative 0.0-1.0
  *
@@ -44,7 +44,7 @@ export async function calculateGeneralityIndex(
 ): Promise<IndicatorResult> {
 	try {
 		// Get CPC sections of all citing patents via publication-level citations
-		// (mirrors radicalness query but reversed: forward instead of backward)
+		// (mirrors originality query but reversed: forward instead of backward)
 		const query = `
 			SELECT SUBSTR(cpc.cpc_class_symbol, 1, 1) AS cpc_section, COUNT(*) AS cnt
 			FROM \`tls211_pat_publn\` p

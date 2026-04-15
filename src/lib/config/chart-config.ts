@@ -1,8 +1,13 @@
 /**
  * EPO dimension color groups and radar chart axis configuration.
  *
- * These 3 dimensions and their colors are the ONLY non-chrome colors in the app.
- * All pass 3:1 contrast against both light (#fafafa) and dark (#0a0a0a) backgrounds.
+ * Two dimensions, mirroring the OECD source paper's framing
+ * (Squicciarini, Dernis & Criscuolo 2013, "Indicators of Technological
+ * and Economic Value"): Technological Importance and Market Relevance.
+ *
+ * The dimension colors are the ONLY non-chrome colors in the app and
+ * pass 3:1 contrast against both light (#fafafa) and dark (#0a0a0a)
+ * backgrounds.
  */
 
 import type { IndicatorName } from '$lib/scoring/types';
@@ -19,7 +24,14 @@ export const EPO_DIMENSIONS: EpoDimension[] = [
 		name: 'Technological Importance',
 		color: '#1E40AF',
 		darkColor: '#3B82F6',
-		indicators: ['forward_citations', 'backward_citations', 'generality_index', 'radicalness_index']
+		indicators: [
+			'forward_citations',
+			'backward_citations',
+			'generality_index',
+			'originality_index',
+			'radicalness_index',
+			'patent_scope'
+		]
 	},
 	{
 		name: 'Market Relevance',
@@ -32,13 +44,15 @@ export const EPO_DIMENSIONS: EpoDimension[] = [
 /** Clockwise axis order for radar chart, grouped by EPO dimension */
 export const AXIS_ORDER: IndicatorName[] = [
 	'forward_citations', // 12 o'clock (top)
-	'generality_index', // ~1:30
-	'family_size', // ~3 o'clock
-	'claims_count', // ~4:30
-	'renewal_duration', // ~5:15
-	'grant_lag_days', // ~6 o'clock (bottom)
-	'radicalness_index', // ~9 o'clock
-	'backward_citations' // ~10:30
+	'generality_index',
+	'family_size',
+	'claims_count',
+	'renewal_duration',
+	'grant_lag_days', // ~6 o'clock
+	'patent_scope',
+	'radicalness_index',
+	'originality_index',
+	'backward_citations'
 ];
 
 /** Get the EPO dimension for a given indicator */

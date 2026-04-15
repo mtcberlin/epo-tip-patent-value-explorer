@@ -66,3 +66,8 @@ _bmad*/
 .claude
 .gemini
 .entire
+
+# Internal data-recompute tooling (kept private — uses TIP BigQuery)
+Cohort_Recompute.ipynb
+cohort-stats-additions.json
+reference-patents-patches.json
