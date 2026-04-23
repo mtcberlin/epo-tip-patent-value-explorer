@@ -70,3 +70,12 @@ _bmad*/
 # Intermediate outputs from cohort recompute (the notebook itself is committed)
 cohort-stats-additions.json
 reference-patents-patches.json
+
+# Submission artefacts (kept locally, not in public dev repo)
+SUBMISSION.md
+SUBMISSION.pdf
+EPO_REPO_README.md
+patent-value-explorer.pdf
+patent-value-explorer.pptx
+.submission-pdf.css
+static/images/
